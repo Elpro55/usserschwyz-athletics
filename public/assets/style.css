@@ -53,6 +53,8 @@ header.site{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);ba
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
 .mark{width:40px;height:40px;border-radius:8px;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.04em;position:relative;overflow:hidden}
 .mark::after{content:"";position:absolute;left:0;right:0;bottom:6px;height:2px;background:var(--accent)}
+.brand .logo{width:48px;height:48px;flex:none;border-radius:50%;display:block}
+.foot-grid .brand .logo{width:56px;height:56px}
 .brand b{font-family:var(--display);font-size:17px;line-height:1.1;display:block}
 .brand small{font-size:12px;color:var(--label);display:block}
 .menu{display:flex;gap:4px;align-items:center}
@@ -381,3 +383,12 @@ table.list td{border-bottom-color:#D9D4CB}
 .media{background:#E2DCD2}
 .media .initials{color:#9A8F80}
 .gtrainer{margin-top:10px;font-size:14px;font-weight:600;color:#fff}
+
+/* Anlagen-Illustrationen in den Gruppenkarten */
+.group .gart{position:absolute;right:14px;bottom:10px;height:58px;width:auto;opacity:.32;pointer-events:none}
+.group .gart *{fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.group .gart .f{fill:#fff;stroke:none}
+.group .gart .sand{fill:#fff;fill-opacity:.35}
+.group>*:not(.gart){position:relative}
+.group .gnum{position:absolute}
+@media (max-width:640px){.group .gart{height:38px;opacity:.2;bottom:8px}}
