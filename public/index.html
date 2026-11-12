@@ -6,64 +6,76 @@
 <title>Usserschwyz Athletics</title>
 <meta name="description" content="Leichtathletik-Trainingsgruppe aus Ausserschwyz. Sprint, Hürden und Mittelstrecke, U18 bis Aktive, Training in Pfäffikon und im Chrummen.">
 <meta property="og:title" content="Usserschwyz Athletics">
-<meta property="og:description" content="Leichtathletik-Trainingsgruppe aus Ausserschwyz. Sprint, Hürden und Mittelstrecke, U18 bis Aktive, Training in Pfäffikon und im Chrummen.">
+<meta property="og:description" content="Leichtathletik-Trainingsgruppe aus Ausserschwyz.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://usserschwyz-athletics.com/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
+<script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("anim")}catch(e){}</script>
+<style>
+  body[data-page="start"]{background:#F4F1EC}
+  body[data-page="start"] header.site{background:transparent;border-bottom-color:transparent;position:absolute;left:0;right:0}
+  .cover{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:#F4F1EC}
+  .cover .wrap{position:relative;z-index:2;padding-top:clamp(104px,15vh,170px)}
+  .cover h1{font-family:'Inter Tight',sans-serif;font-weight:800;color:#14213D;font-size:clamp(52px,min(10vw,15vh),152px);line-height:.88;letter-spacing:-.045em;margin:0}
+  .cover h1 span{display:block}
+  .cover h1 .two{color:#B3262B}
+  .track{position:absolute;left:0;right:0;bottom:0;width:100%;height:48%;z-index:1}
+  .track .lane{fill:none;stroke:#fff;stroke-width:3}
+  .track .num{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:26px;fill:#fff}
+
+  /* Einstieg: Titel steigt auf, Bahnlinien werden gezogen */
+  html.anim .cover h1 span{opacity:0;transform:translateY(40px);animation:titleIn 1s cubic-bezier(.2,.7,.2,1) forwards}
+  html.anim .cover h1 .two{animation-delay:.12s}
+  html.anim .track .tartan{opacity:0;animation:fade .9s ease .1s forwards}
+  html.anim .track .lane{stroke-dasharray:2600;stroke-dashoffset:2600;animation:draw 1.6s cubic-bezier(.4,0,.2,1) forwards}
+  html.anim .track .num{opacity:0;animation:fade .6s ease 1.3s forwards}
+  @media (max-width:640px){.cover .wrap{padding-top:22vh}.track{height:44%}}
+  @keyframes titleIn{to{opacity:1;transform:none}}
+  @keyframes fade{to{opacity:1}}
+  @keyframes draw{to{stroke-dashoffset:0}}
+</style>
 </head>
 <body data-page="start">
 <header id="site-header"></header>
 
-<main>
-  <section class="home-intro">
-    <div class="wrap">
-      <div class="intro">
-        <h1>Usserschwyz Athletics</h1>
-        <p>Wir sind eine Trainingsgruppe für Sprint, Hürden und Mittelstrecke. Seit 2013 trainieren bei uns Athletinnen und Athleten aus Einsiedeln, Wollerau, Pfäffikon, Wangen, Schindellegi, Steinen und Glarus. An Wettkämpfen starten alle für ihren Stammverein.</p>
-        <div class="meta-line"><span>Trainer: Egon Flattich, Arsene Formaz</span><span>U18 bis Aktive</span></div>
-      </div>
-      <div class="next" id="next-training">
-        <div class="k">Nächstes Training</div>
-        <div class="v"></div>
-        <div class="p"></div>
-        <a href="training.html">Alle Trainingszeiten</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="wrap two-col">
-      <div data-reveal>
-        <div class="row-head"><h2 class="h2s">Training</h2><a href="training.html">Details</a></div>
-        <div class="table-scroll"><table class="list">
-          <thead><tr><th>Tag</th><th>Zeit</th><th>Ort</th></tr></thead>
-          <tbody id="training-table"></tbody>
-        </table></div>
-        <p class="note">Im Sommer trainieren wir alle drei Mal im Chrummen.</p>
-      </div>
-      <div data-reveal>
-        <div class="row-head"><h2 class="h2s">Bestleistungen</h2><a href="athleten.html">Alle Athleten</a></div>
-        <div class="table-scroll"><table class="list">
-          <thead><tr><th>Name</th><th>Disziplin</th><th>Bestleistung</th></tr></thead>
-          <tbody id="marks-table"></tbody>
-        </table></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section soft" id="home-news-section" hidden>
-    <div class="wrap">
-      <div class="row-head"><h2 class="h2s">News</h2><a href="news.html">Alle News</a></div>
-      <div class="news-grid" id="home-news"></div>
-    </div>
-  </section>
+<main class="cover">
+  <svg class="track" viewBox="0 340 1600 560" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
+    <!-- Tartanbahn: 8 Bahnen, Gerade links, Kurve rechts unten -->
+    <path class="tartan" fill="#B3262B" d="M-40 360 H1150 A740 740 0 0 1 1890 1100 H1530 A380 380 0 0 0 1150 720 H-40 Z"/>
+    <g id="lanes"></g>
+    <line class="lane" x1="210" y1="360" x2="210" y2="720"/>
+    <g id="nums"></g>
+  </svg>
+  <div class="wrap">
+    <h1><span class="one">Usserschwyz</span><span class="two">Athletics</span></h1>
+  </div>
 </main>
 
-<footer id="site-footer"></footer>
+<script>
+  // Bahnlinien und Bahnnummern zeichnen
+  (function () {
+    var lanes = document.getElementById('lanes'), nums = document.getElementById('nums'), ns = 'http://www.w3.org/2000/svg';
+    for (var i = 0; i <= 8; i++) {
+      var r = 380 + i * 45, y = 1100 - r;
+      var p = document.createElementNS(ns, 'path');
+      p.setAttribute('class', 'lane');
+      p.setAttribute('d', 'M-40 ' + y + ' H1150 A' + r + ' ' + r + ' 0 0 1 ' + (1150 + r) + ' 1100');
+      p.style.animationDelay = (0.2 + (8 - i) * 0.06) + 's';
+      lanes.appendChild(p);
+      if (i < 8) {
+        var t = document.createElementNS(ns, 'text');
+        t.setAttribute('class', 'num'); t.setAttribute('x', 150); t.setAttribute('y', y - 22 + 9);
+        t.setAttribute('text-anchor', 'middle'); t.textContent = i + 1;
+        nums.appendChild(t);
+      }
+    }
+  })();
+</script>
+<footer id="site-footer" hidden></footer>
 <script src="data.js"></script>
 <script src="assets/main.js"></script>
 </body>
