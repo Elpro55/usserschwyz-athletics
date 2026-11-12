@@ -8,7 +8,7 @@ window.SITE = {
 
   contact: {
     name: 'Egon Flattich',
-    email: 'egonflattich@gmail.com',
+    email: 'kontakt@usserschwyz-athletics.com',
     instagram: 'ua_sprint_team'
   },
 
