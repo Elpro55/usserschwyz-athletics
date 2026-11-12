@@ -57,6 +57,25 @@
     var dot = document.createElementNS(ns, 'circle'); dot.setAttribute('class', 'lb-runner'); dot.setAttribute('r', 13); dot.setAttribute('cy', 40); dot.setAttribute('cx', 260); svg.appendChild(dot);
     var trailL = document.createElementNS(ns, 'line'); trailL.setAttribute('class', 'lb-trail'); trailL.setAttribute('x1', 260); trailL.setAttribute('y1', 40); trailL.setAttribute('x2', 260); trailL.setAttribute('y2', 40); svg.insertBefore(trailL, dot);
     band.appendChild(svg); hero.appendChild(band);
+
+    // Seitenansicht: Anlage passend zur Seite, steht auf der Bahn
+    var HURDLE = function (x) { return '<rect class="ap-rail" x="' + (x + 6) + '" y="40" width="108" height="16" rx="2"/>' +
+      '<path class="ap-fill" d="M' + (x + 24) + ' 40h18v16h-18zM' + (x + 60) + ' 40h18v16h-18zM' + (x + 96) + ' 40h18v16h-18z"/>' +
+      '<path class="ap-line" d="M' + (x + 18) + ' 56v62M' + (x + 102) + ' 56v62M' + (x + 4) + ' 118h30M' + (x + 86) + ' 118h30"/>'; };
+    var ART = {
+      verein: [140, HURDLE(10)],
+      news: [270, HURDLE(10) + HURDLE(140)],
+      training: [240, '<path class="ap-line" d="M18 10v108M222 10v108M10 118h16M214 118h16"/><path class="ap-bar" d="M18 38h204"/><rect class="ap-mat" x="34" y="76" width="172" height="42" rx="6"/><path class="ap-line thin" d="M34 92h172"/>'],
+      athleten: [260, '<path class="ap-run" d="M0 116h132"/><rect class="ap-board" x="132" y="111" width="16" height="7"/><path class="ap-sand" d="M154 118c6-18 92-20 104 0z"/><path class="ap-line thin" d="M150 118h110"/><path class="ap-line thin ap-arc" d="M142 106Q190 14 236 104"/><circle class="ap-dot" cx="236" cy="108" r="3"/><circle class="ap-dot" cx="206" cy="110" r="3"/>'],
+      partner: [200, '<path class="ap-line" d="M10 118h180M40 118l22-34M120 118l22-48"/><path class="ap-bar" d="M30 92l30-12M110 80l34-14"/><path class="ap-line thin" d="M62 84v34M142 70v48"/>'],
+      kontakt: [140, HURDLE(10)]
+    };
+    if (ART[page]) {
+      var art = document.createElement('div'); art.className = 'apparatus'; art.setAttribute('aria-hidden', 'true');
+      art.innerHTML = '<svg viewBox="0 0 ' + ART[page][0] + ' 120">' + ART[page][1] + '</svg>';
+      art.style.setProperty('--w', ART[page][0]);
+      hero.appendChild(art);
+    }
     var tag = document.createElement('span'); tag.className = 'lane-tag'; tag.textContent = 'Bahn ' + n; hero.querySelector('.wrap').insertBefore(tag, hero.querySelector('h1'));
 
     // Läufer in der eigenen Bahn = Lesefortschritt
