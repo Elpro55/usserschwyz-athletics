@@ -45,7 +45,13 @@
   .gallery-nav.prev{left:16px}.gallery-nav.next{right:16px}
   .gallery-count{position:absolute;bottom:14px;right:16px;background:rgba(20,33,61,.75);color:#fff;padding:4px 10px;border-radius:20px;font-size:13px}
   @media(max-width:640px){.gallery-frame{aspect-ratio:16/9;max-height:240px}.gallery-nav{width:38px;height:38px}}
-  .agenda{position:relative;z-index:3;background:#F4F1EC;margin-top:0;padding-block:40px 28px}
+  /* Die Kurve laeuft rechts in den Terminbereich weiter. Links bleibt
+     die helle Innenflaeche frei, damit kein Text die Bahn beruehrt. */
+  .agenda{position:relative;isolation:isolate;z-index:3;background:#F4F1EC;margin-top:0;padding-block:40px 48px;overflow:hidden}
+  .agenda::before{content:"";position:absolute;z-index:-1;pointer-events:none;top:-420px;right:-480px;width:760px;height:760px;border:100px solid #B3262B;border-radius:50%;box-sizing:border-box;opacity:1}
+  .agenda>.wrap{position:relative;z-index:1}
+  @media(max-width:900px){.agenda::before{right:-600px;opacity:.55}}
+  @media(max-width:640px){.agenda::before{display:none}}
   .about{background:#ECE7DF;padding-block:72px}
   .about .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:start}
   .about h2{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.03em;color:#14213D;margin-bottom:16px}
