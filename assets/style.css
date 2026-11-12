@@ -264,3 +264,59 @@ html.anim .modal .dialog{animation:rise .35s cubic-bezier(.2,.7,.2,1) both}
   .search{min-width:0;width:100%}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+/* ---------------------------------------------------------------
+   Ruhigere, handgemachte Gestaltung (überschreibt Teile von oben)
+   - weniger Rundungen, keine Deko-Muster, keine Versalien-Labels
+   - Inhalte als Tabellen und Listen wie bei einer Vereinsseite
+   --------------------------------------------------------------- */
+:root{--radius:4px}
+.eyebrow{display:none}
+.lanes,.page-hero::after,.hero::after,.cta::after,.media::after,.mark::after{display:none}
+.media{background:#E7EAF0}
+.media .initials{color:#7A8599;font-size:34px;font-weight:600}
+.btn{border-radius:4px}
+.tile:hover{transform:none}
+header.site{backdrop-filter:none;background:#fff}
+.mark{border-radius:3px}
+
+/* Seitenkopf: schlicht statt grosses Banner */
+.page-hero{background:#fff;color:var(--ink);padding-block:56px 32px;border-bottom:1px solid var(--line)}
+.page-hero h1{color:var(--ink);font-size:clamp(32px,4.5vw,46px);letter-spacing:-.02em}
+.page-hero p{color:var(--muted);font-size:17px}
+
+/* Startseite */
+.home-intro{padding-block:64px 48px;border-bottom:1px solid var(--line)}
+.home-intro .wrap{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:48px;align-items:start}
+.home-intro h1{font-size:clamp(36px,5vw,56px);letter-spacing:-.025em;line-height:1.05;color:var(--navy)}
+.home-intro p{margin-top:18px;font-size:18px;line-height:1.65;color:var(--text);max-width:600px}
+.meta-line{margin-top:20px;font-size:14px;color:var(--label);display:flex;flex-wrap:wrap;gap:4px 18px}
+.next{border-left:3px solid var(--accent);padding:4px 0 4px 20px}
+.next .k{font-size:14px;color:var(--label)}
+.next .v{font-family:var(--display);font-weight:700;font-size:26px;color:var(--navy);margin-top:2px}
+.next .p{color:var(--muted)}
+.next a{display:inline-block;margin-top:12px;font-weight:600;font-size:15px}
+
+.h2s{font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:-.01em;color:var(--ink)}
+.row-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.row-head a{font-weight:600;font-size:15px}
+.home-intro + .section{padding-top:64px}
+.two-col{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:56px}
+
+table.list{width:100%;border-collapse:collapse;font-size:15px}
+table.list th{text-align:left;font-weight:600;font-size:13px;color:var(--label);padding:0 12px 10px 0;border-bottom:2px solid var(--ink)}
+table.list td{padding:12px 12px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.list td.num{font-family:var(--display);font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;white-space:nowrap}
+table.list tr.today td{background:#FBF2F3}
+table.list .sub{color:var(--label);font-size:13px}
+.table-scroll{overflow-x:auto}
+
+/* Training ohne Kacheln */
+.days{display:block}
+.day{display:none}
+.news-card,.person,.tile{border-radius:4px}
+.athlete .media{aspect-ratio:3/4}
+
+@media (max-width:960px){
+  .home-intro .wrap,.two-col{grid-template-columns:1fr;gap:40px}
+}

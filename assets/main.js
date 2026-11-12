@@ -150,6 +150,46 @@
   fill('athlete-count', function (n) { n.textContent = S.athletes.length; });
   fill('contact-email', function (n) { n.textContent = S.contact.email; n.href = 'mailto:' + S.contact.email; });
 
+  // Trainingstabelle und nächstes Training
+  var DAYNUM = { Sonntag: 0, Montag: 1, Dienstag: 2, Mittwoch: 3, Donnerstag: 4, Freitag: 5, Samstag: 6 };
+  function nextTraining() {
+    var now = new Date(), best = null;
+    S.training.forEach(function (d) {
+      var end = d.time.split(/[–-]/)[1] || '23:59', hm = end.split(':');
+      for (var add = 0; add < 8; add++) {
+        var c = new Date(now); c.setDate(now.getDate() + add);
+        if (c.getDay() !== DAYNUM[d.day]) continue;
+        c.setHours(parseInt(hm[0], 10), parseInt(hm[1], 10), 0, 0);
+        if (c < now) continue;
+        if (!best || c < best.when) best = { when: c, d: d, add: add };
+        break;
+      }
+    });
+    return best;
+  }
+  fill('next-training', function (box) {
+    var n = nextTraining(); if (!n) { box.hidden = true; return; }
+    box.querySelector('.v').textContent = (n.add === 0 ? 'Heute' : n.add === 1 ? 'Morgen' : n.d.day) + ', ' + n.d.time.split(/[–-]/)[0] + ' Uhr';
+    box.querySelector('.p').textContent = n.d.place;
+  });
+  fill('training-table', function (tb) {
+    var today = new Date().getDay();
+    S.training.forEach(function (d) {
+      var tr = el('tr'); if (DAYNUM[d.day] === today) tr.className = 'today';
+      tr.appendChild(el('td', null, d.day)); tr.appendChild(el('td', 'num', d.time)); tr.appendChild(el('td', null, d.place));
+      tb.appendChild(tr);
+    });
+  });
+  fill('marks-table', function (tb) {
+    S.athletes.forEach(function (a, i) {
+      if (!a.pbs || !a.pbs[0]) return;
+      var tr = el('tr');
+      var td = el('td'); var b = el('a', null, a.name); b.href = 'athleten.html#' + i; td.appendChild(b); td.appendChild(el('div', 'sub', a.club)); tr.appendChild(td);
+      tr.appendChild(el('td', null, a.pbs[0][0])); tr.appendChild(el('td', 'num', a.pbs[0][1]));
+      tb.appendChild(tr);
+    });
+  });
+
   fill('training-days', function (g) {
     S.training.forEach(function (d) {
       var c = el('div', 'day'); c.setAttribute('data-reveal', '');
@@ -184,6 +224,8 @@
       observe(g);
     }
     render();
+    var h = parseInt((location.hash || '').slice(1), 10);
+    if (!isNaN(h) && S.athletes[h]) openProfile(h, null);
   });
 
   // ---------- Scroll-Animationen ----------
