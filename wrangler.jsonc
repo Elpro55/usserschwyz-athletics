@@ -7,7 +7,9 @@
     "directory": "./public",
     "binding": "ASSETS",
     "run_worker_first": ["/api/*"]
-  }
-  // Speicher für News und Instagram: nach dem Erstellen des KV-Namespace hier eintragen
-  // "kv_namespaces": [{ "binding": "UA_DATA", "id": "<ID aus Cloudflare>" }]
+  },
+  // Speicher für Termine, News und Instagram (Namespace "ua-data")
+  "kv_namespaces": [{ "binding": "UA_DATA", "id": "eb44a99cdcb2439eaf88649bf467f4c7" }],
+  // Admin-Passwort wird als Secret ADMIN_PASSWORD im Cloudflare-Dashboard gesetzt
+  "keep_vars": true
 }
