@@ -380,3 +380,4 @@ table.list td{border-bottom-color:#D9D4CB}
 @media (max-width:640px){.groups{grid-template-columns:1fr}.insta-live{grid-template-columns:repeat(2,minmax(0,1fr))}.page-hero{padding-top:48px}}
 .media{background:#E2DCD2}
 .media .initials{color:#9A8F80}
+.gtrainer{margin-top:10px;font-size:14px;font-weight:600;color:#fff}

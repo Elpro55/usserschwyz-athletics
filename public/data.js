@@ -6,9 +6,6 @@ window.SITE = {
   // Trainingsgruppen: Sprint (inkl. Hürden und Mittelstrecke) und Sprung
   groups: ['Sprint', 'Sprung'],
 
-  // Instagram live: Feed-URL von behold.so (JSON) hier eintragen, dann erscheinen alle Posts automatisch
-  instagramFeedUrl: '',
-
   contact: {
     name: 'Egon Flattich',
     email: 'egonflattich@gmail.com',
@@ -16,8 +13,8 @@ window.SITE = {
   },
 
   trainers: [
-    { name: 'Egon Flattich', role: 'Trainer · Kontaktperson' },
-    { name: 'Arsene Formaz', role: 'Trainer' }
+    { name: 'Egon Flattich', role: 'Sprint, Lauf und Hürden · Kontaktperson' },
+    { name: 'Arsene Formaz', role: 'Sprung' }
   ],
 
   training: [
