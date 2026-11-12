@@ -36,7 +36,7 @@
   }
   @keyframes softIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-  /* Fotogalerie oberhalb der Termine */
+  /* Fotogalerie unterhalb der Termine */
   .gallery-section{background:#F4F1EC;padding:24px 0 48px}
   .gallery-frame{position:relative;aspect-ratio:16/5;max-height:340px;max-width:1000px;margin-inline:auto;overflow:hidden;border-radius:10px;background:#E7E1D8}
   .gallery-frame img{width:100%;height:100%;object-fit:cover;display:block}
@@ -45,7 +45,8 @@
   .gallery-nav.prev{left:16px}.gallery-nav.next{right:16px}
   .gallery-count{position:absolute;bottom:14px;right:16px;background:rgba(20,33,61,.75);color:#fff;padding:4px 10px;border-radius:20px;font-size:13px}
   @media(max-width:640px){.gallery-frame{aspect-ratio:16/9;max-height:240px}.gallery-nav{width:38px;height:38px}}
-  .agenda{background:#F4F1EC;padding-block:12px 48px}
+  .agenda{position:relative;z-index:3;background:transparent;margin-top:-145px;padding-block:0 48px}
+  @media(max-width:640px){.agenda{margin-top:-80px}}
   .about{background:#ECE7DF;padding-block:72px}
   .about .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:start}
   .about h2{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.03em;color:#14213D;margin-bottom:16px}
