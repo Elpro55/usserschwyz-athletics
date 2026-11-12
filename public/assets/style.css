@@ -403,6 +403,7 @@ table.list td{border-bottom-color:#D9D4CB}
 .apparatus .ap-rail{fill:#fff;stroke:#14213D;stroke-width:4}
 .apparatus .ap-fill{fill:#14213D}
 .apparatus .ap-mat{fill:#14213D}
+.apparatus .ap-block{fill:#14213D;stroke:#14213D;stroke-width:3;stroke-linejoin:round}
 .apparatus .ap-board{fill:#fff;stroke:#14213D;stroke-width:2}
 .apparatus .ap-sand{fill:#E3C892}
 .apparatus .ap-dot{fill:#C9AB72}
