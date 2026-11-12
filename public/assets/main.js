@@ -3,8 +3,8 @@
   var S = window.SITE;
   var page = document.body.getAttribute('data-page');
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // Unterseiten: ruhig und ohne Animationen, nur die Startseite bewegt sich
-  if (document.body.getAttribute('data-page') !== 'start') reduceMotion = true;
+  // Ruhige Seite: keine Animationen
+  reduceMotion = true;
 
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function initials(name) { return name.split(' ').map(function (p) { return p[0]; }).join('').slice(0, 2); }
