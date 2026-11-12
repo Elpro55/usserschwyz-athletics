@@ -40,6 +40,7 @@
   .gallery-section{background:#F4F1EC;padding:24px 0 48px}
   .gallery-frame{position:relative;aspect-ratio:16/7;max-height:620px;overflow:hidden;border-radius:10px;background:#E7E1D8}
   .gallery-frame img{width:100%;height:100%;object-fit:cover;display:block}
+  .gallery-caption{margin:0;padding:15px 20px 0;color:#14213D;font-size:16px;line-height:1.5;text-align:center;white-space:pre-wrap}
   .gallery-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;background:rgba(20,33,61,.75);color:#fff;font-size:28px;cursor:pointer;display:grid;place-items:center}
   .gallery-nav.prev{left:16px}.gallery-nav.next{right:16px}
   .gallery-count{position:absolute;bottom:14px;right:16px;background:rgba(20,33,61,.75);color:#fff;padding:4px 10px;border-radius:20px;font-size:13px}
@@ -93,6 +94,7 @@
       <button class="gallery-nav next" id="gallery-next" type="button" aria-label="Nächstes Foto">›</button>
       <span class="gallery-count" id="gallery-count" aria-live="off"></span>
     </div>
+    <p id="gallery-caption" class="gallery-caption" hidden></p>
   </div>
 </section>
 
@@ -149,10 +151,13 @@
   var photos=[],current=0,timer=null,section=document.getElementById('fotos');
   var photo=document.getElementById('gallery-photo'),count=document.getElementById('gallery-count');
   var prev=document.getElementById('gallery-prev'),next=document.getElementById('gallery-next');
+  var caption=document.getElementById('gallery-caption');
   function show(i){
     if(!photos.length)return;
     current=(i+photos.length)%photos.length;
     photo.src=photos[current].url;
+    caption.textContent=photos[current].caption||'';
+    caption.hidden=!caption.textContent;
     count.textContent=(current+1)+' / '+photos.length;
   }
   function restart(){
