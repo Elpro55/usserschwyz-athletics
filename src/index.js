@@ -5,6 +5,7 @@ import * as news from './api/news.js';
 import * as newsItem from './api/news-item.js';
 import * as img from './api/img.js';
 import * as insta from './api/insta.js';
+import * as events from './api/events.js';
 
 function pick(mod, method) {
   const name = 'onRequest' + method.charAt(0) + method.slice(1).toLowerCase();
@@ -20,6 +21,7 @@ export default {
     if (path === '/api/login') mod = login;
     else if (path === '/api/news') mod = news;
     else if (path === '/api/insta') mod = insta;
+    else if (path === '/api/events') mod = events;
     else if (path.startsWith('/api/news/')) { mod = newsItem; params.id = decodeURIComponent(path.slice(10)); }
     else if (path.startsWith('/api/img/')) { mod = img; params.id = decodeURIComponent(path.slice(9)); }
 

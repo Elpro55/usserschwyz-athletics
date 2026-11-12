@@ -150,27 +150,33 @@
   fill('athlete-count', function (n) { n.textContent = S.athletes.length; });
   fill('contact-email', function (n) { n.textContent = S.contact.email; n.href = 'mailto:' + S.contact.email; });
 
-  // Termine (Startseite)
+  // Termine (Startseite): aus dem Admin-Bereich plus data.js
   fill('events-table', function (tb) {
     var WD = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
     function d(iso) { var p = iso.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
     function short(x) { return WD[x.getDay()] + ' ' + x.getDate() + '.' + (x.getMonth() + 1) + '.'; }
     var today = new Date(); today.setHours(0, 0, 0, 0);
-    var list = (S.events || []).filter(function (e) { return d(e.to || e.from) >= today; })
-      .sort(function (a, b) { return a.from.localeCompare(b.from); });
-    list.forEach(function (e) {
-      var a = d(e.from), b = e.to ? d(e.to) : null;
-      var tr = el('tr', 'reveal-row'); tr.setAttribute('data-reveal', '');
-      if ((a - today) / 864e5 <= 7) tr.classList.add('soon');
-      var txt = short(a) + (b ? ' – ' + short(b) : '') + ' ' + (b || a).getFullYear();
-      tr.appendChild(el('td', 'date', txt));
-      tr.appendChild(el('td', 'title', e.title));
-      var tt = el('td', e.time ? null : 'muted', e.time || 'folgt'); tt.setAttribute('data-label', 'Zeit'); tr.appendChild(tt);
-      var tp = el('td', e.place ? null : 'muted', e.place || 'folgt'); tp.setAttribute('data-label', 'Ort'); tr.appendChild(tp);
-      tb.appendChild(tr);
-    });
-    var empty = document.getElementById('events-empty'); if (empty) empty.hidden = list.length > 0;
-    if (!list.length) tb.closest('.table-scroll').hidden = true;
+    function render(all) {
+      tb.innerHTML = '';
+      var list = all.filter(function (e) { return e.from && d(e.to || e.from) >= today; })
+        .sort(function (a, b) { return a.from.localeCompare(b.from); });
+      list.forEach(function (e) {
+        var a = d(e.from), b = e.to ? d(e.to) : null;
+        var tr = el('tr'); tr.setAttribute('data-reveal', '');
+        if ((a - today) / 864e5 <= 7) tr.classList.add('soon');
+        tr.appendChild(el('td', 'date', short(a) + (b ? ' – ' + short(b) : '') + ' ' + (b || a).getFullYear()));
+        tr.appendChild(el('td', 'title', e.title));
+        var tt = el('td', e.time ? null : 'muted', e.time || 'folgt'); tt.setAttribute('data-label', 'Zeit'); tr.appendChild(tt);
+        var tp = el('td', e.place ? null : 'muted', e.place || 'folgt'); tp.setAttribute('data-label', 'Ort'); tr.appendChild(tp);
+        tb.appendChild(tr);
+      });
+      var empty = document.getElementById('events-empty'); if (empty) empty.hidden = list.length > 0;
+      tb.closest('.table-scroll').hidden = !list.length;
+      observe(tb);
+    }
+    render(S.events || []);
+    fetch('/api/events').then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; })
+      .then(function (api) { if (api.length) render((S.events || []).concat(api)); });
   });
 
   // Trainingstabelle und nächstes Training

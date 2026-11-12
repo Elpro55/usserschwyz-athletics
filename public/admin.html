@@ -19,7 +19,7 @@
     <div class="lanes" aria-hidden="true"></div>
     <div class="wrap intro">
       <span class="eyebrow">Intern</span>
-      <h1>News &amp; Instagram verwalten</h1>
+      <h1>Termine, News &amp; Instagram</h1>
       <p>Nur für das Team von Usserschwyz Athletics.</p>
     </div>
   </section>
@@ -40,6 +40,27 @@
         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
           <p class="muted">Angemeldet. Änderungen sind sofort auf der Webseite sichtbar.</p>
           <button class="btn danger" type="button" id="logout">Abmelden</button>
+        </div>
+
+        <div class="panel">
+          <h2 class="h2" style="font-size:26px">Termine</h2>
+          <form id="ev-form" style="display:flex;flex-direction:column;gap:16px">
+            <label class="field">Anlass<input type="text" id="ev-title" maxlength="140" required placeholder="z.B. Regionalkader-Zusammenzug"></label>
+            <div class="row2">
+              <label class="field">Von<input type="date" id="ev-from" required></label>
+              <label class="field">Bis (optional)<input type="date" id="ev-to"></label>
+            </div>
+            <div class="row2">
+              <label class="field">Zeit (optional)<input type="text" id="ev-time" maxlength="40" placeholder="z.B. 09:00–16:00"></label>
+              <label class="field">Ort (optional)<input type="text" id="ev-place" maxlength="80" placeholder="z.B. Chrummen"></label>
+            </div>
+            <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+              <button class="btn" type="submit" id="ev-submit">Termin speichern</button>
+              <span class="msg" id="ev-msg" hidden></span>
+            </div>
+          </form>
+          <div id="ev-list"></div>
+          <p class="muted" id="ev-none" hidden>Noch keine Termine.</p>
         </div>
 
         <div class="panel">
@@ -98,7 +119,7 @@
     if (opts.body && typeof opts.body !== 'string') { opts.body = JSON.stringify(opts.body); opts.headers['Content-Type'] = 'application/json'; }
     return fetch(path, opts).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (r.status === 401) logout(); if (!r.ok) throw new Error(j.error || 'Fehler ' + r.status); return j; }); });
   }
-  function show() { $('login-panel').hidden = !!token; $('admin-area').hidden = !token; if (token) { loadNews(); loadInsta(); } }
+  function show() { $('login-panel').hidden = !!token; $('admin-area').hidden = !token; if (token) { loadNews(); loadInsta(); loadEvents(); } }
   function logout() { token = null; try { sessionStorage.removeItem(KEY); } catch (e) {} show(); }
 
   $('login-form').addEventListener('submit', function (e) {
@@ -168,6 +189,26 @@
         var del = document.createElement('button'); del.className = 'btn danger'; del.type = 'button'; del.textContent = 'Entfernen';
         del.addEventListener('click', function () { api('/api/insta?url=' + encodeURIComponent(u), { method: 'DELETE' }).then(loadInsta); });
         row.appendChild(a); row.appendChild(del); box.appendChild(row);
+      });
+    }).catch(function () {});
+  }
+  $('ev-form').addEventListener('submit', function (e) {
+    e.preventDefault(); msg('ev-msg', ''); $('ev-submit').disabled = true;
+    api('/api/events', { method: 'POST', body: { title: $('ev-title').value, from: $('ev-from').value, to: $('ev-to').value, time: $('ev-time').value, place: $('ev-place').value } })
+      .then(function () { msg('ev-msg', 'Gespeichert.', true); $('ev-form').reset(); loadEvents(); })
+      .catch(function (err) { msg('ev-msg', err.message); }).then(function () { $('ev-submit').disabled = false; });
+  });
+  function loadEvents() {
+    api('/api/events').then(function (list) {
+      var box = $('ev-list'); box.innerHTML = ''; $('ev-none').hidden = list.length > 0;
+      list.forEach(function (ev) {
+        var row = document.createElement('div'); row.className = 'list-item';
+        var left = document.createElement('div'); left.innerHTML = '<b></b><br><small></small>';
+        left.querySelector('b').textContent = ev.title;
+        left.querySelector('small').textContent = ev.from + (ev.to ? ' bis ' + ev.to : '') + (ev.time ? ' · ' + ev.time : '') + (ev.place ? ' · ' + ev.place : '');
+        var del = document.createElement('button'); del.className = 'btn danger'; del.type = 'button'; del.textContent = 'Löschen';
+        del.addEventListener('click', function () { api('/api/events?id=' + encodeURIComponent(ev.id), { method: 'DELETE' }).then(loadEvents); });
+        row.appendChild(left); row.appendChild(del); box.appendChild(row);
       });
     }).catch(function () {});
   }

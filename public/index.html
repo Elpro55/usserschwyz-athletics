@@ -18,7 +18,13 @@
 <style>
   body[data-page="start"]{background:#F4F1EC}
   body[data-page="start"] header.site{background:transparent;border-bottom-color:transparent;position:absolute;left:0;right:0}
-  .cover{position:relative;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:#F4F1EC}
+  .scrolly{position:relative;height:260vh;background:#F4F1EC}
+  .cover{position:sticky;top:0;height:100vh;height:100svh;min-height:560px;overflow:hidden;background:#F4F1EC}
+  .cover .wrap,.track{will-change:transform}
+  .track{transform-origin:0 0;overflow:visible}
+  #runner,#trail{opacity:0}
+  .meter{position:absolute;z-index:3;background:#F4F1EC;padding:4px 12px;border-radius:4px;right:max(24px,calc((100vw - 1200px) / 2 + 24px));bottom:28px;font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(28px,4vw,48px);color:#14213D;font-variant-numeric:tabular-nums;letter-spacing:-.02em;opacity:0}
+  @media (prefers-reduced-motion:reduce){.scrolly{height:auto}.cover{position:relative}}
   .cover .wrap{position:relative;z-index:2;padding-top:clamp(104px,15vh,170px)}
   .cover h1{font-family:'Inter Tight',sans-serif;font-weight:800;color:#14213D;font-size:clamp(52px,min(10vw,15vh),152px);line-height:.88;letter-spacing:-.045em;margin:0}
   .cover h1 span{display:block}
@@ -31,7 +37,7 @@
   html.anim .cover h1 span{opacity:0;transform:translateY(40px);animation:titleIn 1s cubic-bezier(.2,.7,.2,1) forwards}
   html.anim .cover h1 .two{animation-delay:.12s}
   html.anim .track .tartan{opacity:0;animation:fade .9s ease .1s forwards}
-  html.anim .track .lane{stroke-dasharray:2600;stroke-dashoffset:2600;animation:draw 1.6s cubic-bezier(.4,0,.2,1) forwards}
+  html.anim .track .lane{stroke-dasharray:6000;stroke-dashoffset:6000;animation:draw 1.6s cubic-bezier(.4,0,.2,1) forwards}
   html.anim .track .num{opacity:0;animation:fade .6s ease 1.3s forwards}
   .scroll-hint{position:absolute;z-index:3;left:max(24px,calc((100vw - 1200px) / 2 + 24px));bottom:24px;display:inline-flex;align-items:center;gap:8px;background:#F4F1EC;color:#14213D;font-weight:600;font-size:15px;text-decoration:none;padding:10px 14px;border-radius:4px}
   .scroll-hint:hover{background:#fff}
@@ -56,18 +62,23 @@
 <body data-page="start">
 <header id="site-header"></header>
 
-<main class="cover">
+<main class="scrolly">
+<div class="cover">
   <svg class="track" viewBox="0 340 1600 560" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
     <!-- Tartanbahn: 8 Bahnen, Gerade links, Kurve rechts unten -->
-    <path class="tartan" fill="#B3262B" d="M-40 360 H1150 A740 740 0 0 1 1890 1100 H1530 A380 380 0 0 0 1150 720 H-40 Z"/>
+    <path class="tartan" fill="#B3262B" d="M-40 360 H1150 A740 740 0 0 1 1150 1840 H-40 V1480 H1150 A380 380 0 0 0 1150 720 H-40 Z"/>
     <g id="lanes"></g>
     <line class="lane" x1="210" y1="360" x2="210" y2="720"/>
     <g id="nums"></g>
+    <path id="trail" d="" fill="none" stroke="#14213D" stroke-width="10" stroke-linecap="round" opacity=".9"/>
+    <g id="runner"><circle r="17" fill="#14213D" stroke="#fff" stroke-width="5"/></g>
   </svg>
+  <div class="meter" aria-hidden="true"><span id="meter-m">0</span> m</div>
   <div class="wrap">
     <h1><span class="one">Usserschwyz</span><span class="two">Athletics</span></h1>
   </div>
   <a class="scroll-hint" href="#termine">Termine <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+</div>
 </main>
 
 <section class="agenda" id="termine">
@@ -91,9 +102,10 @@
       var r = 380 + i * 45, y = 1100 - r;
       var p = document.createElementNS(ns, 'path');
       p.setAttribute('class', 'lane');
-      p.setAttribute('d', 'M-40 ' + y + ' H1150 A' + r + ' ' + r + ' 0 0 1 ' + (1150 + r) + ' 1100');
+      p.setAttribute('d', 'M-40 ' + y + ' H1150 A' + r + ' ' + r + ' 0 0 1 1150 ' + (1100 + r) + ' H-40');
       p.style.animationDelay = (0.2 + (8 - i) * 0.06) + 's';
       lanes.appendChild(p);
+      if (i === 0) window.__laneLen = p.getTotalLength ? p.getTotalLength() : 2600;
       if (i < 8) {
         var t = document.createElementNS(ns, 'text');
         t.setAttribute('class', 'num'); t.setAttribute('x', 150); t.setAttribute('y', y - 22 + 9);
@@ -101,6 +113,54 @@
         nums.appendChild(t);
       }
     }
+  })();
+
+  // Scroll-Animation: Läufer auf Bahn 4, Kamera fährt in die Kurve
+  (function () {
+    if (!document.documentElement.classList.contains('anim')) return;
+    var ns = 'http://www.w3.org/2000/svg';
+    var scrolly = document.querySelector('.scrolly'), cover = document.querySelector('.cover');
+    var title = cover.querySelector('.wrap'), track = cover.querySelector('.track'), hint = cover.querySelector('.scroll-hint');
+    var meter = cover.querySelector('.meter'), meterM = document.getElementById('meter-m');
+    var r = 380 + 3.5 * 45, y = 1100 - r;
+    var guide = document.createElementNS(ns, 'path');
+    guide.setAttribute('d', 'M210 ' + y + ' H1150 A' + r + ' ' + r + ' 0 0 1 ' + (1150 + r) + ' 1100');
+    var len = guide.getTotalLength();
+    var trail = document.getElementById('trail'), runner = document.getElementById('runner');
+    trail.setAttribute('d', guide.getAttribute('d'));
+    trail.style.strokeDasharray = len; trail.style.strokeDashoffset = len;
+    var ticking = false, base = null;
+    function measure() {
+      var old = track.style.transform; track.style.transform = 'none';
+      var m = track.getScreenCTM(), b = track.getBoundingClientRect();
+      base = { a: m.a, d: m.d, e: m.e - b.left, f: m.f - b.top, top: b.top - cover.getBoundingClientRect().top };
+      track.style.transform = old;
+    }
+    function ease(t) { return t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+    function frame() {
+      ticking = false;
+      var total = scrolly.offsetHeight - window.innerHeight;
+      var p = Math.min(Math.max(-scrolly.getBoundingClientRect().top / total, 0), 1);
+      var e = ease(p);
+      title.style.transform = 'translate3d(0,' + (-e * 40) + 'vh,0)';
+      title.style.opacity = Math.max(0, 1 - p * 2.2);
+      hint.style.opacity = Math.max(0, 1 - p * 6);
+      var run = Math.min(p / 0.92, 1), pos = guide.getPointAtLength(run * len);
+      // Kamera folgt dem Läufer
+      if (!base) measure();
+      var qx = base.a * pos.x + base.e, qy = base.d * pos.y + base.f, sc = 1 + e * 1.1;
+      var dx = qx + (cover.clientWidth * 0.5 - qx) * e, dy = qy + (cover.clientHeight * 0.5 - base.top - qy) * e;
+      track.style.transform = 'translate3d(' + (dx - sc * qx) + 'px,' + (dy - sc * qy) + 'px,0) scale(' + sc + ')';
+      runner.setAttribute('transform', 'translate(' + pos.x + ',' + pos.y + ')');
+      runner.style.opacity = trail.style.opacity = p > 0.01 ? 1 : 0;
+      trail.style.strokeDashoffset = len * (1 - run);
+      meter.style.opacity = p > 0.02 ? 1 : 0;
+      meterM.textContent = Math.round(run * 200);
+    }
+    function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () { base = null; onScroll(); });
+    frame();
   })();
 </script>
 <footer id="site-footer"></footer>
