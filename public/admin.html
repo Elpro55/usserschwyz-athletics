@@ -43,6 +43,20 @@
         </div>
 
         <div class="panel">
+          <h2 class="h2" style="font-size:26px">Fotos auf der Homepage</h2>
+          <p class="muted">Die Fotos erscheinen oberhalb der Termine. Bei mehreren Bildern wechselt die Anzeige alle 15 Sekunden. Du kannst Bilder hinzufügen, entfernen und ihre Reihenfolge ändern (maximal 20).</p>
+          <form id="gallery-form" style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:18px">
+            <label class="field" style="flex:1 1 280px">Fotos auswählen (JPG, PNG oder WebP)
+              <input id="gallery-files" type="file" accept="image/jpeg,image/png,image/webp" multiple required>
+            </label>
+            <button class="btn" type="submit" id="gallery-submit">Fotos hochladen</button>
+          </form>
+          <p class="msg" id="gallery-msg" hidden></p>
+          <div id="gallery-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-top:22px"></div>
+          <p class="muted" id="gallery-none" hidden>Noch keine Fotos hochgeladen.</p>
+        </div>
+
+        <div class="panel">
           <h2 class="h2" style="font-size:26px">Termine</h2>
           <form id="ev-form" style="display:flex;flex-direction:column;gap:16px">
             <label class="field">Anlass<input type="text" id="ev-title" maxlength="140" required placeholder="z.B. Regionalkader-Zusammenzug"></label>
@@ -119,7 +133,7 @@
     if (opts.body && typeof opts.body !== 'string') { opts.body = JSON.stringify(opts.body); opts.headers['Content-Type'] = 'application/json'; }
     return fetch(path, opts).then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (r.status === 401) logout(); if (!r.ok) throw new Error(j.error || 'Fehler ' + r.status); return j; }); });
   }
-  function show() { $('login-panel').hidden = !!token; $('admin-area').hidden = !token; if (token) { loadNews(); loadInsta(); loadEvents(); } }
+  function show() { $('login-panel').hidden = !!token; $('admin-area').hidden = !token; if (token) { loadNews(); loadInsta(); loadEvents(); loadGallery(); } }
   function logout() { token = null; try { sessionStorage.removeItem(KEY); } catch (e) {} show(); }
 
   $('login-form').addEventListener('submit', function (e) {
@@ -211,6 +225,62 @@
         row.appendChild(left); row.appendChild(del); box.appendChild(row);
       });
     }).catch(function () {});
+  }
+  // Homepage-Fotos verwalten
+  $('gallery-form').addEventListener('submit', function(e){
+    e.preventDefault();msg('gallery-msg','');
+    var files=Array.prototype.slice.call($('gallery-files').files);
+    if(!files.length)return;
+    $('gallery-submit').disabled=true;
+    var uploaded=0;
+    files.reduce(function(chain,file){
+      return chain.then(function(){
+        if(!/^image\/(jpeg|png|webp)$/.test(file.type))throw new Error('Nur JPG, PNG oder WebP sind erlaubt.');
+        return shrink(file).then(function(image){
+          return api('/api/gallery',{method:'POST',body:{image:image}}).then(function(){uploaded++});
+        });
+      });
+    },Promise.resolve()).then(function(){
+      msg('gallery-msg',uploaded+' Foto(s) hochgeladen.',true);
+      $('gallery-form').reset();loadGallery();
+    }).catch(function(err){
+      msg('gallery-msg',err.message+(uploaded?' ('+uploaded+' bereits hochgeladen)':''));
+      loadGallery();
+    }).then(function(){$('gallery-submit').disabled=false});
+  });
+  function loadGallery(){
+    api('/api/gallery').then(function(items){
+      var box=$('gallery-list');box.innerHTML='';
+      $('gallery-none').hidden=items.length>0;
+      items.forEach(function(item,i){
+        var card=document.createElement('div');
+        card.style.cssText='border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;padding-bottom:10px';
+        var img=document.createElement('img');
+        img.src=item.url;img.alt='Galeriefoto '+(i+1);
+        img.style.cssText='width:100%;height:125px;object-fit:cover';
+        card.appendChild(img);
+        var buttons=document.createElement('div');
+        buttons.style.cssText='display:flex;gap:6px;flex-wrap:wrap;padding:10px';
+        function action(label,handler,disabled){
+          var b=document.createElement('button');b.type='button';b.textContent=label;
+          b.className='btn';b.style.cssText='font-size:12px;padding:7px 9px';
+          b.disabled=!!disabled;
+          b.addEventListener('click',handler);buttons.appendChild(b);
+        }
+        function move(to){
+          api('/api/gallery',{method:'PUT',body:{id:item.id,to:to}}).then(loadGallery)
+            .catch(function(e){msg('gallery-msg',e.message)});
+        }
+        action('←',function(){move(i-1)},i===0);
+        action('→',function(){move(i+1)},i===items.length-1);
+        action('Entfernen',function(){
+          if(!confirm('Dieses Foto wirklich entfernen?'))return;
+          api('/api/gallery?id='+encodeURIComponent(item.id),{method:'DELETE'})
+            .then(loadGallery).catch(function(e){msg('gallery-msg',e.message)});
+        });
+        card.appendChild(buttons);box.appendChild(card);
+      });
+    }).catch(function(e){msg('gallery-msg',e.message)});
   }
   show();
 })();
