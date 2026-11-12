@@ -17,6 +17,8 @@
 <style>
   body[data-page="start"]{background:#F4F1EC}
   body[data-page="start"] header.site{background:transparent;border-bottom-color:transparent;position:absolute;left:0;right:0}
+  /* Weisse Logoflaechen an den cremefarbenen Hintergrund angleichen. */
+  body[data-page="start"] header.site .brand .logo{mix-blend-mode:multiply}
   .cover{position:relative;height:88vh;height:88svh;min-height:520px;max-height:900px;overflow:hidden;background:#F4F1EC}
   .cover .wrap{position:relative;z-index:2;padding-top:clamp(104px,15vh,170px)}
   .cover h1{font-family:'Inter Tight',sans-serif;font-weight:800;color:#14213D;font-size:clamp(48px,min(9vw,14vh),136px);line-height:.88;letter-spacing:-.045em;margin:0}
