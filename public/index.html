@@ -16,21 +16,24 @@
 <link rel="stylesheet" href="assets/style.css">
 <style>
   body[data-page="start"]{background:#F4F1EC}
-  .start-hero{background:#F4F1EC;padding-top:72px}
-  .start-hero .wrap{padding-bottom:40px}
-  .start-hero h1{font-family:'Inter Tight',sans-serif;font-weight:800;color:#14213D;font-size:clamp(42px,6.5vw,84px);line-height:.95;letter-spacing:-.04em;margin:0 0 20px}
-  .start-hero h1 span{display:block}
-  .start-hero h1 .two{color:#B3262B}
-  .start-hero p{font-size:18px;line-height:1.6;color:#334155;max-width:560px}
-  .start-band{height:22px;background:#B3262B;border-top:3px solid #fff;box-shadow:inset 0 -3px 0 #fff}
-  /* Einzige Animation: Titel blendet ein, Bahnstreifen läuft einmal von links */
+  body[data-page="start"] header.site{background:transparent;border-bottom-color:transparent;position:absolute;left:0;right:0}
+  .cover{position:relative;height:88vh;height:88svh;min-height:520px;max-height:900px;overflow:hidden;background:#F4F1EC}
+  .cover .wrap{position:relative;z-index:2;padding-top:clamp(104px,15vh,170px)}
+  .cover h1{font-family:'Inter Tight',sans-serif;font-weight:800;color:#14213D;font-size:clamp(48px,min(9vw,14vh),136px);line-height:.88;letter-spacing:-.045em;margin:0}
+  .cover h1 span{display:block}
+  .cover h1 .two{color:#B3262B}
+  .track{position:absolute;left:0;right:0;bottom:0;width:100%;height:48%;z-index:1;overflow:visible}
+  .track .lane{fill:none;stroke:#fff;stroke-width:3}
+  .track .num{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:26px;fill:#fff}
+  @media (max-width:640px){.cover .wrap{padding-top:22vh}.track{height:44%}}
+  /* Nur dezent: Titel und Bahn blenden beim Laden kurz ein */
   @media (prefers-reduced-motion:no-preference){
-    .start-hero .wrap>*{animation:softIn .6s ease both}
-    .start-hero p{animation-delay:.1s}
-    .start-band{transform-origin:0 50%;animation:bandIn .9s cubic-bezier(.4,0,.2,1) .15s both}
+    .cover h1 span{animation:softIn .6s ease both}
+    .cover h1 .two{animation-delay:.08s}
+    .track{animation:fadeIn .8s ease .15s both}
   }
-  @keyframes softIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-  @keyframes bandIn{from{transform:scaleX(0)}to{transform:none}}
+  @keyframes softIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   .agenda{background:#F4F1EC;padding-block:64px 48px}
   .about{background:#ECE7DF;padding-block:72px}
   .about .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:start}
@@ -57,12 +60,19 @@
 <body data-page="start">
 <header id="site-header"></header>
 
-<main class="start-hero">
+<main class="start-track">
+<div class="cover">
+  <svg class="track" viewBox="0 340 1600 560" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
+    <!-- Tartanbahn: 8 Bahnen, Gerade links, Kurve rechts unten -->
+    <path class="tartan" fill="#B3262B" d="M-40 360 H1150 A740 740 0 0 1 1150 1840 H-40 V1480 H1150 A380 380 0 0 0 1150 720 H-40 Z"/>
+    <g id="lanes"></g>
+    <line class="lane" x1="210" y1="360" x2="210" y2="720"/>
+    <g id="nums"></g>
+  </svg>
   <div class="wrap">
-    <h1><span class="one">Usserschwyz</span> <span class="two">Athletics</span></h1>
-    <p>Trainingsgruppe für leistungsorientierte Leichtathletinnen und Leichtathleten. Sprint und Sprung, von der U18 bis zu den Aktiven.</p>
+    <h1><span class="one">Usserschwyz</span><span class="two">Athletics</span></h1>
   </div>
-  <div class="start-band" aria-hidden="true"></div>
+</div>
 </main>
 
 <section class="agenda" id="termine">
@@ -94,6 +104,23 @@
 </section>
 
 <script>
+  // Bahnlinien und Bahnnummern zeichnen
+  (function () {
+    var lanes = document.getElementById('lanes'), nums = document.getElementById('nums'), ns = 'http://www.w3.org/2000/svg';
+    for (var i = 0; i <= 8; i++) {
+      var r = 380 + i * 45, y = 1100 - r;
+      var p = document.createElementNS(ns, 'path');
+      p.setAttribute('class', 'lane');
+      p.setAttribute('d', 'M-40 ' + y + ' H1150 A' + r + ' ' + r + ' 0 0 1 1150 ' + (1100 + r) + ' H-40');
+      lanes.appendChild(p);
+      if (i < 8) {
+        var t = document.createElementNS(ns, 'text');
+        t.setAttribute('class', 'num'); t.setAttribute('x', 150); t.setAttribute('y', y - 22 + 9);
+        t.setAttribute('text-anchor', 'middle'); t.textContent = i + 1;
+        nums.appendChild(t);
+      }
+    }
+  })();
 
 </script>
 <footer id="site-footer"></footer>
