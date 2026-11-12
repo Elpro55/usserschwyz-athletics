@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Usserschwyz Athletics</title>
+<meta name="description" content="Leichtathletik-Trainingsgruppe aus Ausserschwyz. Sprint, Sprung und Mittelstrecke, U18 bis Aktive, Training in Pfäffikon und im Chrummen.">
+<meta property="og:title" content="Usserschwyz Athletics">
+<meta property="og:description" content="Leichtathletik aus Ausserschwyz. Sprint, Sprung und Mittelstrecke seit 2013.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://usserschwyz-athletics.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231B2A41'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-weight='700' font-size='26' fill='white' text-anchor='middle'%3EUA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1B2A41; --ink:#111827; --text:#374151; --muted:#4B5563; --label:#6B7280;
+  --line:#E5E7EB; --soft:#F5F6F8; --ph:#E5E7EB; --bg:#FFFFFF;
+  --display:'Inter Tight', 'Inter', system-ui, sans-serif;
+  --body:'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:var(--navy)}
+h1,h2,h3{font-family:var(--display);text-wrap:balance}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(24px, env(safe-area-inset-left));padding-right:max(24px, env(safe-area-inset-right))}
+.section{padding-block:112px}
+.soft{background:var(--soft)}
+.eyebrow{margin:0;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--label)}
+.h2{margin:0;font-weight:700;font-size:clamp(32px,4.5vw,44px);line-height:1.08;letter-spacing:-.02em;color:var(--navy)}
+.lead{margin:0;font-size:18px;line-height:1.7;color:var(--text)}
+.head{display:flex;flex-wrap:wrap;gap:16px 64px;justify-content:space-between;align-items:flex-end;margin-bottom:48px}
+.head > div{display:flex;flex-direction:column;gap:16px}
+.ph{background:var(--ph);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;text-align:center;padding:16px;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover}
+.btn{display:inline-block;background:var(--navy);color:#fff;text-decoration:none;font-weight:600;padding:14px 24px;border-radius:8px}
+.btn:hover{background:#0F1A2B;color:#fff}
+:focus-visible{outline:2px solid var(--navy);outline-offset:4px}
+
+/* Header */
+header{border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:20}
+nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px;padding-block:14px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.logo{width:40px;height:40px;border-radius:8px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:.04em}
+.brand span{font-family:var(--display);font-weight:700;font-size:18px}
+.links{display:flex;flex-wrap:wrap;gap:4px 28px;font-size:15px;font-weight:500;align-items:center}
+.links a{color:#374151;text-decoration:none;padding:10px 0}
+.links a:hover{color:var(--navy)}
+.links a.btn{color:#fff;padding:10px 18px}
+
+/* Hero */
+.hero{padding-top:72px}
+.hero-top{display:flex;flex-wrap:wrap;gap:24px 64px;align-items:flex-end;justify-content:space-between;margin-bottom:40px}
+.hero h1{flex:1 1 560px;margin:0;font-weight:700;font-size:clamp(42px,6vw,76px);line-height:1.02;letter-spacing:-.03em;color:var(--navy)}
+.hero p{flex:1 1 340px;margin:0;font-size:18px;line-height:1.6;color:var(--muted)}
+.hero .ph{height:clamp(260px,42vw,520px);border-radius:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:48px}
+.stats div{padding:28px 0}
+.stats b{display:block;font-family:var(--display);font-weight:700;font-size:40px;color:var(--navy)}
+.stats span{font-size:15px;color:var(--muted)}
+
+/* Verein */
+.verein{display:flex;flex-wrap:wrap;gap:48px 64px;align-items:center}
+.verein-text{flex:1 1 460px;min-width:0;display:flex;flex-direction:column;gap:20px}
+.verein-img{flex:1 1 420px;min-width:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.verein-img .ph{height:300px}
+.verein-img .ph:last-child{margin-top:48px}
+
+/* Training */
+.trainer{max-width:380px;display:flex;flex-direction:column;gap:6px}
+.trainer p{margin:0;font-size:16px;line-height:1.6;color:var(--muted)}
+.trainer p:first-child{color:var(--ink)}
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.day{background:#fff;border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:12px}
+.day b{font-family:var(--display);font-weight:700;font-size:26px;color:var(--navy)}
+.day span{font-size:17px;font-weight:600}
+.day small{font-size:16px;color:var(--muted)}
+
+/* Team */
+.team{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:32px 24px}
+.card{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:16px;border-radius:12px}
+.card:focus-visible{outline:2px solid var(--navy);outline-offset:6px}
+.card .ph{aspect-ratio:4/5;padding:0}
+.card:hover .more{text-decoration:underline}
+.card h3{margin:0;font-weight:600;font-size:20px}
+.club{margin:0;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--label)}
+.pbs{margin-top:8px;border-top:1px solid var(--line)}
+.pb{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--muted)}
+.pb b{font-family:var(--display);font-weight:700;font-size:17px;color:var(--navy);font-variant-numeric:tabular-nums}
+.more{margin-top:10px;font-size:14px;font-weight:600;color:var(--navy)}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(17,24,39,.55);overflow-y:auto;padding:32px 16px}
+.dialog{max-width:880px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;display:flex;flex-wrap:wrap}
+.dialog .ph{flex:1 1 300px;min-height:360px;border-radius:0;padding:0}
+.dialog-body{flex:1.4 1 380px;min-width:0;padding:32px;display:flex;flex-direction:column;gap:24px}
+.dialog-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.dialog h3{margin:0 0 6px;font-weight:700;font-size:32px;color:var(--navy)}
+.close{flex:0 0 44px;width:44px;height:44px;border-radius:999px;border:1px solid #D1D5DB;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.dialog .pb{padding:10px 0;font-size:16px}
+.dialog .pb b{font-size:18px}
+.block{display:flex;flex-direction:column;gap:8px}
+.bio{margin:0;font-size:17px;line-height:1.7;color:var(--text)}
+.wins{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:16px;line-height:1.5;color:var(--text)}
+.wa{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;padding:12px 18px;border:1.5px solid var(--navy);border-radius:8px;color:var(--navy);text-decoration:none;font-weight:600;font-size:15px}
+.wa:hover{background:var(--navy);color:#fff}
+
+/* News */
+.news{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px}
+.news article{background:#fff;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.news .ph{aspect-ratio:16/10;border-radius:0;padding:0}
+.news .txt{padding:24px;display:flex;flex-direction:column;gap:10px}
+.news .date{margin:0;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--label)}
+.news h3{margin:0;font-weight:700;font-size:21px;line-height:1.25;color:var(--navy)}
+.news p.t{margin:0;font-size:16px;line-height:1.6;color:var(--text)}
+
+/* Instagram */
+.insta{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.insta a{aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:var(--ph);display:block}
+.insta img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.insta a:hover img{transform:scale(1.04)}
+
+/* Partner */
+.partner{background:var(--navy);color:#fff}
+.partner .eyebrow{color:#C7D0DD}
+.partner .h2{color:#fff}
+.partner .lead{color:#DCE2EA;max-width:640px}
+.partner .btn{background:#fff;color:var(--navy)}
+
+/* Kontakt */
+.kontakt{display:flex;flex-wrap:wrap;gap:48px 64px}
+.kontakt > div:first-child{flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.contact-card{flex:1 1 440px;min-width:0;background:var(--soft);border-radius:12px;padding:32px;display:flex;flex-direction:column;gap:20px}
+.contact-card .v{margin:4px 0 0;font-size:18px;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+.contact-card .name{font-family:var(--display);font-weight:700;font-size:24px;color:var(--navy)}
+.contact-card .v a{color:var(--ink)}
+
+/* Footer */
+footer{border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-block:28px;color:var(--label)}
+.foot a{color:var(--muted)}
+.imp{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px 48px;line-height:1.7;padding-bottom:48px}
+.imp p{margin:0}
+.imp p.h{margin-bottom:6px;font-weight:600;color:var(--ink)}
+
+@media (max-width:640px){
+  .section{padding-block:72px}
+  .links{gap:2px 18px;font-size:14px}
+  .verein-img .ph{height:220px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.insta img{transition:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav aria-label="Hauptnavigation">
+      <a class="brand" href="#top"><div class="logo">UA</div><span>Usserschwyz Athletics</span></a>
+      <div class="links">
+        <a href="#verein">Verein</a>
+        <a href="#training">Training</a>
+        <a href="#team">Team</a>
+        <a href="#news">News</a>
+        <a href="#partner">Partner</a>
+        <a class="btn" href="#kontakt">Kontakt</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section id="top" class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <h1>Leichtathletik aus Ausserschwyz.</h1>
+      <p>Seit 2013 trainieren bei uns Athletinnen und Athleten von der U18 bis zu den Aktiven in Sprint, Sprung und Mittelstrecke.</p>
+    </div>
+    <div class="ph">Teamfoto folgt</div>
+    <div class="stats">
+      <div><b>2013</b><span>gegründet</span></div>
+      <div><b>~20</b><span>Mitglieder</span></div>
+      <div><b>3</b><span>Disziplingruppen</span></div>
+      <div><b>U18–Aktive</b><span>Altersgruppen</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="verein" class="section">
+  <div class="wrap verein">
+    <div class="verein-text">
+      <p class="eyebrow">Der Verein</p>
+      <h2 class="h2">Eine Trainingsgruppe aus der ganzen Region</h2>
+      <p class="lead">Usserschwyz Athletics bringt Leichtathletinnen und Leichtathleten aus Einsiedeln, Wollerau, Pfäffikon, Wangen, Schindellegi, Steinen und Glarus zusammen. Wir trainieren gemeinsam, bleiben aber für Wettkämpfe in unseren Stammvereinen.</p>
+      <p class="lead">Im Zentrum stehen Sprint, Sprung und Mittelstrecke. Junge Athletinnen und Athleten trainieren direkt neben erfahrenen, und genau davon profitieren alle.</p>
+    </div>
+    <div class="verein-img">
+      <div class="ph">Foto folgt</div>
+      <div class="ph">Foto folgt</div>
+    </div>
+  </div>
+</section>
+
+<section id="training" class="section soft">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <p class="eyebrow">Training</p>
+        <h2 class="h2">Dreimal pro Woche auf der Bahn</h2>
+      </div>
+      <div class="trainer">
+        <p><strong>Trainer:</strong> Egon Flattich und Arsene Formaz</p>
+        <p>Im Sommer finden alle Trainings im Chrummen statt.</p>
+      </div>
+    </div>
+    <div class="days">
+      <div class="day"><b>Montag</b><span>18:00–20:00</span><small>Weid, Pfäffikon</small></div>
+      <div class="day"><b>Mittwoch</b><span>18:00–20:00</span><small>Chrummen</small></div>
+      <div class="day"><b>Samstag</b><span>10:30–13:00</span><small>Alte Kanti, Pfäffikon</small></div>
+    </div>
+  </div>
+</section>
+
+<section id="team" class="section">
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <p class="eyebrow">Team Sprint</p>
+        <h2 class="h2">Das sind wir</h2>
+      </div>
+      <p style="margin:0;max-width:380px;font-size:16px;line-height:1.6;color:var(--muted)">Unsere Athletinnen und Athleten mit ihren Bestleistungen. Klick auf ein Profil für mehr.</p>
+    </div>
+    <div class="team" id="team-grid"></div>
+  </div>
+</section>
+
+<section id="news" class="section soft">
+  <div class="wrap">
+    <div class="head"><div>
+      <p class="eyebrow">News</p>
+      <h2 class="h2">Aus der Saison</h2>
+    </div></div>
+    <div class="news" id="news-grid"></div>
+  </div>
+</section>
+
+<section id="instagram" class="section">
+  <div class="wrap">
+    <div class="head" style="margin-bottom:40px">
+      <div>
+        <p class="eyebrow">Instagram</p>
+        <h2 class="h2">@ua_sprint_team</h2>
+      </div>
+      <a class="btn" href="https://www.instagram.com/ua_sprint_team/" target="_blank" rel="noopener">Folge uns auf Instagram</a>
+    </div>
+    <div class="insta" id="insta-grid"></div>
+  </div>
+</section>
+
+<section id="partner" class="section partner">
+  <div class="wrap">
+    <div class="head" style="margin-bottom:0">
+      <div style="flex:1 1 520px">
+        <p class="eyebrow">Partner</p>
+        <h2 class="h2">Werde unser erster Partner</h2>
+        <p class="lead">Rund 20 Athletinnen und Athleten aus sieben Vereinen, von der U18 bis zu den Aktiven, mit Bestleistungen bis an die Schweizer Spitze. Mit einem Partner aus der Region können wir Trainingslager, Wettkampfreisen und neues Material finanzieren. Ihr Logo erscheint hier und auf unserem Instagram.</p>
+      </div>
+      <a class="btn" href="#kontakt">Partner werden</a>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt" class="section">
+  <div class="wrap kontakt">
+    <div>
+      <p class="eyebrow">Kontakt</p>
+      <h2 class="h2">Schreib uns</h2>
+      <p class="lead">Probetraining, Fragen zur Trainingsgruppe oder eine Partnerschaft: Melde dich direkt bei Egon.</p>
+    </div>
+    <div class="contact-card">
+      <div><p class="eyebrow">Ansprechperson</p><p class="v name">Egon Flattich</p><p style="margin:0;color:var(--muted)">Trainer</p></div>
+      <div><p class="eyebrow">E-Mail</p><p class="v"><a href="mailto:egonflattich@gmail.com">egonflattich@gmail.com</a></p></div>
+      <div><p class="eyebrow">Instagram</p><p class="v"><a href="https://www.instagram.com/ua_sprint_team/" target="_blank" rel="noopener">@ua_sprint_team</a></p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot"><span>© 2026 Usserschwyz Athletics</span><a href="#impressum">Impressum</a></div>
+    <div class="imp" id="impressum">
+      <div><p class="h">Impressum</p><p>Usserschwyz Athletics<br>Leichtathletik-Trainingsgruppe Ausserschwyz<br>Verantwortlich: Egon Flattich<br>egonflattich@gmail.com</p></div>
+      <div><p class="h">Bestleistungen</p><p>Die Leistungen stammen aus öffentlichen Resultatlisten von World Athletics und Swiss Athletics sowie aus Angaben der Athletinnen und Athleten.</p></div>
+      <div><p class="h">Fotos und Daten</p><p>Alle Personen haben der Veröffentlichung zugestimmt, bei Minderjährigen mit Einverständnis der Eltern. Wer einen Eintrag entfernen lassen möchte, meldet sich per E-Mail.</p></div>
+    </div>
+  </div>
+</footer>
+
+<div class="modal" id="modal" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="m-name">
+    <div class="ph" id="m-photo">Porträt folgt</div>
+    <div class="dialog-body">
+      <div class="dialog-top">
+        <div><h3 id="m-name"></h3><p class="club" id="m-club"></p></div>
+        <button class="close" id="m-close" type="button" aria-label="Profil schliessen">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <p class="bio" id="m-bio" hidden></p>
+      <div class="block"><p class="eyebrow">Bestleistungen</p><div class="pbs" id="m-pbs" style="margin-top:0"></div></div>
+      <div class="block" id="m-wins-block" hidden><p class="eyebrow">Erfolge</p><ul class="wins" id="m-wins"></ul></div>
+      <a class="wa" id="m-wa" target="_blank" rel="noopener" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>
+        Profil auf World Athletics
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  var S = window.SITE || { athletes: [], news: [], instagram: [] };
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function photo(src, alt, fallback) {
+    var box = el('div', 'ph');
+    if (src) { var i = el('img'); i.src = src; i.alt = alt || ''; i.loading = 'lazy'; box.appendChild(i); }
+    else box.textContent = fallback;
+    return box;
+  }
+  function pbList(target, pbs) {
+    target.innerHTML = '';
+    (pbs || []).forEach(function (p) {
+      var row = el('div', 'pb'); row.appendChild(el('span', null, p[0])); row.appendChild(el('b', null, p[1])); target.appendChild(row);
+    });
+  }
+
+  // Team
+  var grid = document.getElementById('team-grid');
+  S.athletes.forEach(function (a, idx) {
+    var b = el('button', 'card'); b.type = 'button';
+    b.appendChild(photo(a.photo, a.name, 'Porträt folgt'));
+    var info = el('div'); info.style.cssText = 'display:flex;flex-direction:column;gap:4px';
+    info.appendChild(el('h3', null, a.name));
+    info.appendChild(el('p', 'club', a.club));
+    var pbs = el('div', 'pbs'); pbList(pbs, a.pbs); info.appendChild(pbs);
+    info.appendChild(el('span', 'more', 'Profil ansehen →'));
+    b.appendChild(info);
+    b.addEventListener('click', function () { openProfile(idx, b); });
+    grid.appendChild(b);
+  });
+
+  // Modal
+  var modal = document.getElementById('modal'), lastFocus = null;
+  function openProfile(i, from) {
+    var a = S.athletes[i]; lastFocus = from;
+    document.getElementById('m-name').textContent = a.name;
+    document.getElementById('m-club').textContent = a.club;
+    var ph = document.getElementById('m-photo'); ph.innerHTML = '';
+    if (a.photo) { var im = el('img'); im.src = a.photo; im.alt = a.name; ph.appendChild(im); } else ph.textContent = 'Porträt folgt';
+    var bio = document.getElementById('m-bio'); bio.textContent = a.bio || ''; bio.hidden = !a.bio;
+    pbList(document.getElementById('m-pbs'), a.pbs);
+    var wb = document.getElementById('m-wins-block'), wl = document.getElementById('m-wins'); wl.innerHTML = '';
+    (a.wins || []).forEach(function (w) { wl.appendChild(el('li', null, w)); });
+    wb.hidden = !(a.wins && a.wins.length);
+    var wa = document.getElementById('m-wa');
+    if (a.wa) { wa.href = 'https://worldathletics.org/athletes/switzerland/' + a.wa; wa.hidden = false; } else wa.hidden = true;
+    modal.hidden = false; document.body.style.overflow = 'hidden';
+    document.getElementById('m-close').focus();
+  }
+  function closeProfile() { modal.hidden = true; document.body.style.overflow = ''; if (lastFocus) lastFocus.focus(); }
+  document.getElementById('m-close').addEventListener('click', closeProfile);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeProfile(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) closeProfile(); });
+
+  // News
+  var ng = document.getElementById('news-grid');
+  S.news.forEach(function (n) {
+    var art = el('article');
+    art.appendChild(photo(n.photo, n.title, 'Foto folgt'));
+    var t = el('div', 'txt');
+    t.appendChild(el('p', 'date', n.date)); t.appendChild(el('h3', null, n.title)); t.appendChild(el('p', 't', n.text));
+    art.appendChild(t); ng.appendChild(art);
+  });
+
+  // Instagram
+  var ig = document.getElementById('insta-grid');
+  if (!S.instagram.length) ig.style.display = 'none';
+  S.instagram.forEach(function (p) {
+    var a = el('a'); a.href = p.url; a.target = '_blank'; a.rel = 'noopener';
+    var im = el('img'); im.src = p.image; im.alt = 'Instagram-Post'; im.loading = 'lazy'; a.appendChild(im); ig.appendChild(a);
+  });
+})();
+</script>
+</body>
+</html>
