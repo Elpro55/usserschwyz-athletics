@@ -6,6 +6,8 @@ import * as newsItem from './api/news-item.js';
 import * as img from './api/img.js';
 import * as insta from './api/insta.js';
 import * as events from './api/events.js';
+import * as gallery from './api/gallery.js';
+import * as galleryImage from './api/gallery-image.js';
 
 function pick(mod, method) {
   const name = 'onRequest' + method.charAt(0) + method.slice(1).toLowerCase();
@@ -22,6 +24,8 @@ export default {
     else if (path === '/api/news') mod = news;
     else if (path === '/api/insta') mod = insta;
     else if (path === '/api/events') mod = events;
+    else if (path === '/api/gallery') mod = gallery;
+    else if (path.startsWith('/api/gallery/image/')) { mod = galleryImage; params.id = decodeURIComponent(path.slice('/api/gallery/image/'.length)); }
     else if (path.startsWith('/api/news/')) { mod = newsItem; params.id = decodeURIComponent(path.slice(10)); }
     else if (path.startsWith('/api/img/')) { mod = img; params.id = decodeURIComponent(path.slice(9)); }
 
