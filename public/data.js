@@ -31,7 +31,7 @@ window.SITE = {
     { name: 'Livia Casagrande', club: 'TSV Steinen', groups: ['Sprint'], wa: 'livia-casagrande-15098340',
       pbs: [['400 m', '56.96'], ['800 m', '2:11.48'], ['600 m', '1:31.54']] },
     { name: 'Pauline Vial', club: 'ETV Schindellegi', groups: ['Sprint'], wa: 'pauline-vial-15197227',
-      pbs: [['100 m Hürden (U18)', '15.14'], ['100 m', '12.62'], ['200 m', '27.15']] },
+      pbs: [['100 m Hürden (U18)', '14.54'], ['100 m', '12.62'], ['200 m', '27.15']] },
     { name: 'Elis Schönbächler', club: 'STV Einsiedeln', groups: ['Sprint'], wa: 'elis-schonbachler-15257093',
       pbs: [['400 m', '49.63'], ['200 m', '22.73'], ['100 m', '11.35']] },
     { name: 'Gian Cavegn', club: 'STV Wollerau-Bäch', groups: ['Sprint'],
