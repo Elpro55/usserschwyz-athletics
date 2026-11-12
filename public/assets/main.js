@@ -18,7 +18,7 @@
   // ---------- Kopfzeile ----------
   var NAV = [
     ['index.html', 'Start', 'start'], ['verein.html', 'Verein', 'verein'], ['training.html', 'Training', 'training'],
-    ['athleten.html', 'Athleten', 'athleten'], ['news.html', 'News', 'news'], ['instagram.html', 'Instagram', 'instagram'], ['kontakt.html', 'Kontakt', 'kontakt']
+    ['athleten.html', 'Athleten', 'athleten'], ['news.html', 'News', 'news'], ['partner.html', 'Partner', 'partner'], ['kontakt.html', 'Kontakt', 'kontakt']
   ];
   var header = document.getElementById('site-header');
   if (header) {
@@ -36,6 +36,45 @@
     window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
   }
 
+  // ---------- Seitenkopf: Tartanbahn mit Bahnnummer ----------
+  var LANE = { verein: 1, training: 2, athleten: 3, news: 4, partner: 5, kontakt: 6, impressum: 7, admin: 8 };
+  var hero = document.querySelector('.page-hero');
+  if (hero && LANE[page]) {
+    var n = LANE[page], ns = 'http://www.w3.org/2000/svg';
+    var band = document.createElement('div'); band.className = 'lane-band'; band.setAttribute('aria-hidden', 'true');
+    var svg = document.createElementNS(ns, 'svg'); svg.setAttribute('viewBox', '0 0 1600 160'); svg.setAttribute('preserveAspectRatio', 'xMinYMid slice');
+    var bg = document.createElementNS(ns, 'rect'); bg.setAttribute('class', 'lb-tartan'); bg.setAttribute('x', 0); bg.setAttribute('y', 0); bg.setAttribute('width', 1600); bg.setAttribute('height', 160); svg.appendChild(bg);
+    [0, 80, 160].forEach(function (y, i) {
+      var l = document.createElementNS(ns, 'line'); l.setAttribute('class', 'lb-line'); l.setAttribute('x1', 0); l.setAttribute('x2', 1600); l.setAttribute('y1', y || 2); l.setAttribute('y2', y || 2);
+      if (y === 160) { l.setAttribute('y1', 158); l.setAttribute('y2', 158); }
+      l.style.animationDelay = (0.15 + i * 0.12) + 's'; svg.appendChild(l);
+    });
+    var start = document.createElementNS(ns, 'line'); start.setAttribute('class', 'lb-line lb-start'); start.setAttribute('x1', 260); start.setAttribute('x2', 260); start.setAttribute('y1', 0); start.setAttribute('y2', 160); svg.appendChild(start);
+    [n, n + 1].forEach(function (k, i) {
+      if (k > 8) return;
+      var t = document.createElementNS(ns, 'text'); t.setAttribute('class', 'lb-num' + (i ? ' other' : '')); t.setAttribute('x', 190); t.setAttribute('y', i ? 140 : 60); t.setAttribute('text-anchor', 'middle'); t.textContent = k; svg.appendChild(t);
+    });
+    var dot = document.createElementNS(ns, 'circle'); dot.setAttribute('class', 'lb-runner'); dot.setAttribute('r', 13); dot.setAttribute('cy', 40); dot.setAttribute('cx', 260); svg.appendChild(dot);
+    var trailL = document.createElementNS(ns, 'line'); trailL.setAttribute('class', 'lb-trail'); trailL.setAttribute('x1', 260); trailL.setAttribute('y1', 40); trailL.setAttribute('x2', 260); trailL.setAttribute('y2', 40); svg.insertBefore(trailL, dot);
+    band.appendChild(svg); hero.appendChild(band);
+    var tag = document.createElement('span'); tag.className = 'lane-tag'; tag.textContent = 'Bahn ' + n; hero.querySelector('.wrap').insertBefore(tag, hero.querySelector('h1'));
+
+    // Läufer in der eigenen Bahn = Lesefortschritt
+    if (!reduceMotion) {
+      var tk = false;
+      var move = function () {
+        tk = false;
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        var p = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+        var x = 260 + p * 1280;
+        dot.setAttribute('cx', x); trailL.setAttribute('x2', x);
+        band.style.setProperty('--shift', (-window.scrollY * 0.15) + 'px');
+      };
+      window.addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(move); } }, { passive: true });
+      move();
+    }
+  }
+
   // ---------- Fusszeile ----------
   var footer = document.getElementById('site-footer');
   if (footer) {
@@ -43,7 +82,7 @@
     footer.innerHTML =
       '<div class="wrap"><div class="foot-grid">' +
       '<div><a class="brand" href="index.html"><span class="mark">UA</span><span><b>Usserschwyz Athletics</b><small>seit 2013</small></span></a>' +
-      '<p>Leichtathletik-Trainingsgruppe aus Ausserschwyz für Sprint, Sprung und Mittelstrecke.</p></div>' +
+      '<p>Leichtathletik aus Ausserschwyz mit den Trainingsgruppen Sprint und Sprung.</p></div>' +
       '<div><h4>Seiten</h4><ul>' + NAV.map(function (n) { return '<li><a href="' + n[0] + '">' + n[1] + '</a></li>'; }).join('') + '</ul></div>' +
       '<div><h4>Training</h4><ul>' + S.training.map(function (d) { return '<li>' + d.day + ' ' + d.time + '</li>'; }).join('') + '</ul></div>' +
       '<div><h4>Folge uns</h4><ul><li><a href="https://www.instagram.com/' + S.contact.instagram + '/" target="_blank" rel="noopener">Instagram @' + S.contact.instagram + '</a></li>' +
@@ -145,7 +184,27 @@
 
   fill('home-news', function (g) { loadNews(g, 3, null, document.getElementById('home-news-section')); });
   fill('all-news', function (g) { loadNews(g, 0, document.getElementById('news-empty')); });
-  fill('insta-feed', function (g) { loadInsta(g, 0, document.getElementById('insta-empty')); });
+  fill('insta-feed', function (g) {
+    var empty = document.getElementById('insta-empty');
+    if (!S.instagramFeedUrl) { loadInsta(g, 0, empty); return; }
+    // Live-Feed (behold.so): alle neuen Posts erscheinen automatisch
+    fetch(S.instagramFeedUrl).then(function (r) { return r.json(); }).then(function (data) {
+      var posts = Array.isArray(data) ? data : (data.posts || []);
+      if (!posts.length) throw new Error('leer');
+      g.className = 'insta-live'; g.innerHTML = '';
+      posts.slice(0, 12).forEach(function (p, i) {
+        var a = el('a'); a.href = p.permalink; a.target = '_blank'; a.rel = 'noopener'; a.setAttribute('data-reveal', '');
+        a.style.setProperty('--d', (i % 4) * 70 + 'ms');
+        var src = (p.sizes && p.sizes.medium && p.sizes.medium.mediaUrl) || p.thumbnailUrl || p.mediaUrl;
+        var im = el('img'); im.src = src; im.loading = 'lazy'; im.alt = (p.prunedCaption || p.caption || 'Instagram-Post').slice(0, 120);
+        a.appendChild(im);
+        if (p.mediaType === 'VIDEO') a.appendChild(el('span', 'insta-badge', 'Video'));
+        g.appendChild(a);
+      });
+      if (empty) empty.hidden = true;
+      observe(g);
+    }).catch(function () { loadInsta(g, 0, empty); });
+  });
   fill('home-insta', function (g) { loadInsta(g, 3, null); });
   fill('athlete-count', function (n) { n.textContent = S.athletes.length; });
   fill('contact-email', function (n) { n.textContent = S.contact.email; n.href = 'mailto:' + S.contact.email; });
@@ -234,7 +293,7 @@
 
   fill('all-athletes', function (g) {
     var chips = document.getElementById('group-chips'), search = document.getElementById('athlete-search'), empty = document.getElementById('athlete-empty');
-    var active = 'Alle', groups = ['Alle'];
+    var active = 'Alle', groups = ['Alle'].concat(S.groups || []);
     S.athletes.forEach(function (a) { (a.groups || []).forEach(function (x) { if (groups.indexOf(x) < 0) groups.push(x); }); });
     groups.forEach(function (gname) {
       var c = el('button', 'chip', gname); c.type = 'button'; c.setAttribute('aria-pressed', gname === active);
