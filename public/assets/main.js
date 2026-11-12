@@ -25,7 +25,7 @@
     header.className = 'site';
     header.innerHTML =
       '<div class="wrap"><div class="nav">' +
-      '<a class="brand" href="index.html"><span class="mark">UA</span><span><b>Usserschwyz Athletics</b><small>Leichtathletik · Ausserschwyz</small></span></a>' +
+      '<a class="brand" href="index.html"><span class="mark">UA</span><span><b>Usserschwyz Athletics</b><small>Leichtathletik · Sprint &amp; Sprung</small></span></a>' +
       '<button class="menu-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>' +
       '<nav class="menu" aria-label="Hauptnavigation">' +
       NAV.map(function (n) { return '<a href="' + n[0] + '"' + (n[2] === page ? ' aria-current="page"' : '') + '>' + n[1] + '</a>'; }).join('') +
@@ -82,7 +82,7 @@
     footer.innerHTML =
       '<div class="wrap"><div class="foot-grid">' +
       '<div><a class="brand" href="index.html"><span class="mark">UA</span><span><b>Usserschwyz Athletics</b><small>seit 2013</small></span></a>' +
-      '<p>Leichtathletik aus Ausserschwyz mit den Trainingsgruppen Sprint und Sprung.</p></div>' +
+      '<p>Trainingsgruppe für leistungsorientierte Leichtathletinnen und Leichtathleten in Sprint und Sprung.</p></div>' +
       '<div><h4>Seiten</h4><ul>' + NAV.map(function (n) { return '<li><a href="' + n[0] + '">' + n[1] + '</a></li>'; }).join('') + '</ul></div>' +
       '<div><h4>Training</h4><ul>' + S.training.map(function (d) { return '<li>' + d.day + ' ' + d.time + '</li>'; }).join('') + '</ul></div>' +
       '<div><h4>Folge uns</h4><ul><li><a href="https://www.instagram.com/' + S.contact.instagram + '/" target="_blank" rel="noopener">Instagram @' + S.contact.instagram + '</a></li>' +

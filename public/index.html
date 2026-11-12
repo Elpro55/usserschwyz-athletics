@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Usserschwyz Athletics</title>
-<meta name="description" content="Leichtathletik-Trainingsgruppe aus Ausserschwyz. Trainingsgruppen Sprint und Sprung, U18 bis Aktive, Training in Pfäffikon und im Chrummen.">
+<meta name="description" content="Trainingsgruppe für leistungsorientierte Leichtathletinnen und Leichtathleten. Gruppen Sprint und Sprung, U18 bis Aktive.">
 <meta property="og:title" content="Usserschwyz Athletics">
-<meta property="og:description" content="Leichtathletik-Trainingsgruppe aus Ausserschwyz.">
+<meta property="og:description" content="Trainingsgruppe für leistungsorientierte Leichtathletinnen und Leichtathleten.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://usserschwyz-athletics.com/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -43,8 +43,19 @@
   .scroll-hint:hover{background:#fff}
   .scroll-hint svg{animation:nudge 1.8s ease-in-out infinite}
   @keyframes nudge{0%,100%{transform:none}50%{transform:translateY(3px)}}
-  .agenda{background:#F4F1EC;padding-block:88px 104px}
-  .agenda .wrap{max-width:980px}
+  .agenda{background:#F4F1EC;padding-block:88px 56px}
+  .about{background:#ECE7DF;padding-block:72px}
+  .about .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:start}
+  .about h2{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(30px,4vw,44px);letter-spacing:-.03em;color:#14213D;margin-bottom:16px}
+  .about p{font-size:17px;line-height:1.7;color:#334155;margin-bottom:12px;max-width:600px}
+  .about-links{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:8px}
+  .about-links a{font-weight:600;color:#14213D}
+  .about .groups{grid-template-columns:1fr}
+  .about .group{text-decoration:none}
+  .about .group p{margin:0;max-width:none;color:#F6D9DA;font-size:16px}
+  .about .group p.gtrainer{color:#fff;margin-top:10px;font-size:14px}
+  .about .group:hover{background:#9E2025}
+  @media (max-width:860px){.about .wrap{grid-template-columns:1fr}}
   .agenda h2{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(34px,5vw,56px);letter-spacing:-.03em;color:#14213D;margin-bottom:28px}
   .agenda-table td{padding-block:18px;font-size:16px}
   .agenda-table td.date{font-family:'Inter Tight',sans-serif;font-weight:700;color:#B3262B;white-space:nowrap;font-variant-numeric:tabular-nums}
@@ -91,6 +102,21 @@
       </table>
     </div>
     <p class="note" id="events-empty" hidden>Zurzeit sind keine Termine eingetragen.</p>
+  </div>
+</section>
+
+<section class="about">
+  <div class="wrap">
+    <div class="about-text" data-reveal>
+      <h2>Wer wir sind</h2>
+      <p>Usserschwyz Athletics ist eine Trainingsgruppe für leistungsorientierte Leichtathletinnen und Leichtathleten. Wer bei uns trainiert, arbeitet gezielt auf Wettkämpfe hin, von regionalen Meetings bis zu Schweizer Meisterschaften.</p>
+      <p>Trainiert wird in zwei Gruppen: Sprint, wozu auch Hürden und Mittelstrecke gehören, und Sprung. An Wettkämpfen starten alle für ihren eigenen Verein.</p>
+      <div class="about-links"><a href="athleten.html">Athleten und Bestleistungen</a><a href="training.html">Trainingszeiten</a></div>
+    </div>
+    <div class="groups" style="max-width:none">
+      <a class="group" href="training.html" data-reveal><span class="gnum">1</span><h3 class="h2s">Sprint</h3><p class="muted">Sprint, Hürden und Mittelstrecke</p><p class="gtrainer">Egon Flattich</p></a>
+      <a class="group" href="training.html" data-reveal><span class="gnum">2</span><h3 class="h2s">Sprung</h3><p class="muted">Sprungdisziplinen</p><p class="gtrainer">Arsene Formaz</p></a>
+    </div>
   </div>
 </section>
 
