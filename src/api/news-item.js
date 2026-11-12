@@ -1,5 +1,5 @@
 // DELETE /api/news/:id  (Admin) -> News löschen
-import { isAdmin, noStore, kvMissing, kvError, unauthorized } from '../_auth.js';
+import { isAdmin, noStore, kvMissing, kvError, unauthorized } from './_auth.js';
 
 export async function onRequestDelete({ request, env, params }) {
   if (kvMissing(env)) return kvError();
