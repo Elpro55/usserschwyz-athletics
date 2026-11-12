@@ -3,6 +3,8 @@
   var S = window.SITE;
   var page = document.body.getAttribute('data-page');
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Unterseiten: ruhig und ohne Animationen, nur die Startseite bewegt sich
+  if (document.body.getAttribute('data-page') !== 'start') reduceMotion = true;
 
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function initials(name) { return name.split(' ').map(function (p) { return p[0]; }).join('').slice(0, 2); }
@@ -56,6 +58,7 @@
     });
     var dot = document.createElementNS(ns, 'circle'); dot.setAttribute('class', 'lb-runner'); dot.setAttribute('r', 13); dot.setAttribute('cy', 40); dot.setAttribute('cx', 260); svg.appendChild(dot);
     var trailL = document.createElementNS(ns, 'line'); trailL.setAttribute('class', 'lb-trail'); trailL.setAttribute('x1', 260); trailL.setAttribute('y1', 40); trailL.setAttribute('x2', 260); trailL.setAttribute('y2', 40); svg.insertBefore(trailL, dot);
+    if (reduceMotion) { dot.remove(); trailL.remove(); }
     band.appendChild(svg); hero.appendChild(band);
 
     // Seitenansicht: Anlage passend zur Seite, steht auf der Bahn
