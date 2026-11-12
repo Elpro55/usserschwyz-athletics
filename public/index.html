@@ -33,6 +33,20 @@
   html.anim .track .tartan{opacity:0;animation:fade .9s ease .1s forwards}
   html.anim .track .lane{stroke-dasharray:2600;stroke-dashoffset:2600;animation:draw 1.6s cubic-bezier(.4,0,.2,1) forwards}
   html.anim .track .num{opacity:0;animation:fade .6s ease 1.3s forwards}
+  .scroll-hint{position:absolute;z-index:3;left:max(24px,calc((100vw - 1200px) / 2 + 24px));bottom:24px;display:inline-flex;align-items:center;gap:8px;background:#F4F1EC;color:#14213D;font-weight:600;font-size:15px;text-decoration:none;padding:10px 14px;border-radius:4px}
+  .scroll-hint:hover{background:#fff}
+  .scroll-hint svg{animation:nudge 1.8s ease-in-out infinite}
+  @keyframes nudge{0%,100%{transform:none}50%{transform:translateY(3px)}}
+  .agenda{background:#F4F1EC;padding-block:88px 104px}
+  .agenda .wrap{max-width:980px}
+  .agenda h2{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(34px,5vw,56px);letter-spacing:-.03em;color:#14213D;margin-bottom:28px}
+  .agenda-table td{padding-block:18px;font-size:16px}
+  .agenda-table td.date{font-family:'Inter Tight',sans-serif;font-weight:700;color:#B3262B;white-space:nowrap;font-variant-numeric:tabular-nums}
+  .agenda-table td.title{font-weight:600;color:#14213D}
+  .agenda-table td.muted{color:#64748B}
+  .agenda-table tr.soon td.date::after{content:"bald";display:inline-block;margin-left:10px;font-family:Inter,sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:#B3262B;padding:2px 7px;border-radius:3px;vertical-align:2px}
+  .agenda-table th{border-bottom-color:#14213D}
+  @media (max-width:640px){.agenda-table thead{display:none}table.list.agenda-table tr{display:grid;grid-template-columns:1fr;gap:4px;padding-block:16px;border-bottom:1px solid #D9D4CB}table.list.agenda-table td{border:0;padding:0}table.list.agenda-table td[data-label]::before{content:attr(data-label) ": ";color:#64748B}}
   @media (max-width:640px){.cover .wrap{padding-top:22vh}.track{height:44%}}
   @keyframes titleIn{to{opacity:1;transform:none}}
   @keyframes fade{to{opacity:1}}
@@ -53,7 +67,21 @@
   <div class="wrap">
     <h1><span class="one">Usserschwyz</span><span class="two">Athletics</span></h1>
   </div>
+  <a class="scroll-hint" href="#termine">Termine <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
 </main>
+
+<section class="agenda" id="termine">
+  <div class="wrap">
+    <h2>Termine</h2>
+    <div class="table-scroll">
+      <table class="list agenda-table">
+        <thead><tr><th>Datum</th><th>Anlass</th><th>Zeit</th><th>Ort</th></tr></thead>
+        <tbody id="events-table"></tbody>
+      </table>
+    </div>
+    <p class="note" id="events-empty" hidden>Zurzeit sind keine Termine eingetragen.</p>
+  </div>
+</section>
 
 <script>
   // Bahnlinien und Bahnnummern zeichnen
@@ -75,7 +103,7 @@
     }
   })();
 </script>
-<footer id="site-footer" hidden></footer>
+<footer id="site-footer"></footer>
 <script src="data.js"></script>
 <script src="assets/main.js"></script>
 </body>

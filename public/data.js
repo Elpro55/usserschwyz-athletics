@@ -20,6 +20,12 @@ window.SITE = {
     { day: 'Samstag', time: '10:30–13:00', place: 'Alte Kanti, Pfäffikon' }
   ],
 
+  // Termine für die Tabelle auf der Startseite. Vergangene Termine verschwinden automatisch.
+  // from/to im Format JJJJ-MM-TT, to nur bei mehrtägigen Anlässen. time und place sind optional.
+  events: [
+    { from: '2026-11-14', to: '2026-11-15', title: 'Regionalkader-Zusammenzug', time: '', place: '' }
+  ],
+
   athletes: [
     { name: 'Livia Casagrande', club: 'TSV Steinen', groups: ['Sprint', 'Mittelstrecke'], wa: 'livia-casagrande-15098340',
       pbs: [['400 m', '56.96'], ['800 m', '2:11.48'], ['600 m', '1:31.54']] },

@@ -150,6 +150,29 @@
   fill('athlete-count', function (n) { n.textContent = S.athletes.length; });
   fill('contact-email', function (n) { n.textContent = S.contact.email; n.href = 'mailto:' + S.contact.email; });
 
+  // Termine (Startseite)
+  fill('events-table', function (tb) {
+    var WD = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+    function d(iso) { var p = iso.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+    function short(x) { return WD[x.getDay()] + ' ' + x.getDate() + '.' + (x.getMonth() + 1) + '.'; }
+    var today = new Date(); today.setHours(0, 0, 0, 0);
+    var list = (S.events || []).filter(function (e) { return d(e.to || e.from) >= today; })
+      .sort(function (a, b) { return a.from.localeCompare(b.from); });
+    list.forEach(function (e) {
+      var a = d(e.from), b = e.to ? d(e.to) : null;
+      var tr = el('tr', 'reveal-row'); tr.setAttribute('data-reveal', '');
+      if ((a - today) / 864e5 <= 7) tr.classList.add('soon');
+      var txt = short(a) + (b ? ' – ' + short(b) : '') + ' ' + (b || a).getFullYear();
+      tr.appendChild(el('td', 'date', txt));
+      tr.appendChild(el('td', 'title', e.title));
+      var tt = el('td', e.time ? null : 'muted', e.time || 'folgt'); tt.setAttribute('data-label', 'Zeit'); tr.appendChild(tt);
+      var tp = el('td', e.place ? null : 'muted', e.place || 'folgt'); tp.setAttribute('data-label', 'Ort'); tr.appendChild(tp);
+      tb.appendChild(tr);
+    });
+    var empty = document.getElementById('events-empty'); if (empty) empty.hidden = list.length > 0;
+    if (!list.length) tb.closest('.table-scroll').hidden = true;
+  });
+
   // Trainingstabelle und nächstes Training
   var DAYNUM = { Sonntag: 0, Montag: 1, Dienstag: 2, Mittwoch: 3, Donnerstag: 4, Freitag: 5, Samstag: 6 };
   function nextTraining() {
