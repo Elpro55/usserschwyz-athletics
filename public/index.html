@@ -46,7 +46,7 @@
   .gallery-count{position:absolute;bottom:14px;right:16px;background:rgba(20,33,61,.75);color:#fff;padding:4px 10px;border-radius:20px;font-size:13px}
   @media(max-width:640px){.gallery-frame{aspect-ratio:16/9;max-height:240px}.gallery-nav{width:38px;height:38px}}
   /* Die bestehende Bahn reicht in einem einzigen Bogen bis neben die Termine. */
-  .agenda{position:relative;z-index:3;background:#F4F1EC;margin-top:0;padding:38px 0 70px;min-height:460px}
+  .agenda{position:relative;z-index:3;background:transparent;margin-top:0;padding:38px 0 70px;min-height:460px}
   .agenda>.wrap{position:relative;z-index:2;padding-right:clamp(24px,9vw,145px)}
   @media(max-width:640px){.agenda>.wrap{padding-right:24px}}
   .about{background:#ECE7DF;padding-block:72px}
@@ -77,8 +77,8 @@
 <main class="start-track">
 <div class="cover">
   <svg class="track" viewBox="0 340 1600 1120" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
-    <!-- Dieselbe Tartanbahn: verlaengerte Originalkurve, keine zweite Bahn -->
-    <path class="tartan" fill="#B3262B" d="M-40 360 H1150 A740 740 0 0 1 1150 1840 H-40 V1480 H1150 A380 380 0 0 0 1150 720 H-40 Z"/>
+    <!-- Originalbahn: nur die erste Kurve bis zur 200-m-Seite, keine zweite Haelfte -->
+    <path class="tartan" fill="#B3262B" d="M-40 360 H1150 A740 740 0 0 1 1890 1100 L1530 1100 A380 380 0 0 0 1150 720 H-40 Z"/>
     <g id="lanes"></g>
     <line class="lane" x1="210" y1="360" x2="210" y2="720"/>
     <g id="nums"></g>
@@ -138,7 +138,7 @@
       var r = 380 + i * 45, y = 1100 - r;
       var p = document.createElementNS(ns, 'path');
       p.setAttribute('class', 'lane');
-      p.setAttribute('d', 'M-40 ' + y + ' H1150 A' + r + ' ' + r + ' 0 0 1 1150 ' + (1100 + r) + ' H-40');
+      p.setAttribute('d', 'M-40 ' + y + ' H1150 A' + r + ' ' + r + ' 0 0 1 ' + (1150 + r) + ' 1100');
       lanes.appendChild(p);
       if (i < 8) {
         var t = document.createElementNS(ns, 'text');
