@@ -36,6 +36,14 @@
   }
   @keyframes softIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  /* Fotogalerie oberhalb der Termine */
+  .gallery-section{background:#F4F1EC;padding:24px 0 48px}
+  .gallery-frame{position:relative;aspect-ratio:16/7;max-height:620px;overflow:hidden;border-radius:10px;background:#E7E1D8}
+  .gallery-frame img{width:100%;height:100%;object-fit:cover;display:block}
+  .gallery-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;background:rgba(20,33,61,.75);color:#fff;font-size:28px;cursor:pointer;display:grid;place-items:center}
+  .gallery-nav.prev{left:16px}.gallery-nav.next{right:16px}
+  .gallery-count{position:absolute;bottom:14px;right:16px;background:rgba(20,33,61,.75);color:#fff;padding:4px 10px;border-radius:20px;font-size:13px}
+  @media(max-width:640px){.gallery-frame{aspect-ratio:4/3}.gallery-nav{width:38px;height:38px}}
   .agenda{background:#F4F1EC;padding-block:64px 48px}
   .about{background:#ECE7DF;padding-block:72px}
   .about .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:start}
@@ -76,6 +84,17 @@
   </div>
 </div>
 </main>
+
+<section class="gallery-section" id="fotos" hidden aria-label="Fotos von Usserschwyz Athletics">
+  <div class="wrap">
+    <div class="gallery-frame" aria-roledescription="Karussell">
+      <img id="gallery-photo" alt="Usserschwyz Athletics – Fotogalerie">
+      <button class="gallery-nav prev" id="gallery-prev" type="button" aria-label="Vorheriges Foto">‹</button>
+      <button class="gallery-nav next" id="gallery-next" type="button" aria-label="Nächstes Foto">›</button>
+      <span class="gallery-count" id="gallery-count" aria-live="off"></span>
+    </div>
+  </div>
+</section>
 
 <section class="agenda" id="termine">
   <div class="wrap">
@@ -124,6 +143,36 @@
     }
   })();
 
+</script>
+<script>
+(function(){
+  var photos=[],current=0,timer=null,section=document.getElementById('fotos');
+  var photo=document.getElementById('gallery-photo'),count=document.getElementById('gallery-count');
+  var prev=document.getElementById('gallery-prev'),next=document.getElementById('gallery-next');
+  function show(i){
+    if(!photos.length)return;
+    current=(i+photos.length)%photos.length;
+    photo.src=photos[current].url;
+    count.textContent=(current+1)+' / '+photos.length;
+  }
+  function restart(){
+    if(timer)clearInterval(timer);
+    if(photos.length>1&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+      timer=setInterval(function(){show(current+1)},15000);
+  }
+  function move(delta){show(current+delta);restart()}
+  prev.addEventListener('click',function(){move(-1)});
+  next.addEventListener('click',function(){move(1)});
+  fetch('/api/gallery',{cache:'no-store'}).then(function(r){if(!r.ok)throw Error();return r.json()})
+    .then(function(list){
+      photos=Array.isArray(list)?list.filter(function(p){return p&&typeof p.url==='string'}):[];
+      if(!photos.length)return;
+      section.hidden=false;
+      prev.hidden=next.hidden=count.hidden=photos.length<2;
+      show(0);restart();
+    }).catch(function(){});
+  document.addEventListener('visibilitychange',function(){if(document.hidden&&timer){clearInterval(timer);timer=null}else if(!document.hidden)restart()});
+})();
 </script>
 <footer id="site-footer"></footer>
 <script src="data.js"></script>
