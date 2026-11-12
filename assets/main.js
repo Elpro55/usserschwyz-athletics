@@ -1,7 +1,8 @@
-// Usserschwyz Athletics – Kopf- und Fusszeile, Inhalte aus data.js
+// Usserschwyz Athletics – Kopf- und Fusszeile, Inhalte, Animationen
 (function () {
   var S = window.SITE;
   var page = document.body.getAttribute('data-page');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function initials(name) { return name.split(' ').map(function (p) { return p[0]; }).join('').slice(0, 2); }
@@ -12,10 +13,13 @@
     return m;
   }
   var MONTHS = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
-  function fmtDate(iso) { var d = iso.split('-'); return parseInt(d[2], 10) + '. ' + MONTHS[parseInt(d[1], 10) - 1] + ' ' + d[0]; }
+  function fmtDate(iso) { var d = (iso || '').split('-'); if (d.length < 3) return ''; return parseInt(d[2], 10) + '. ' + MONTHS[parseInt(d[1], 10) - 1] + ' ' + d[0]; }
 
   // ---------- Kopfzeile ----------
-  var NAV = [['index.html', 'Start', 'start'], ['verein.html', 'Verein & Training', 'verein'], ['athleten.html', 'Athleten', 'athleten'], ['news.html', 'News', 'news'], ['kontakt.html', 'Kontakt', 'kontakt']];
+  var NAV = [
+    ['index.html', 'Start', 'start'], ['verein.html', 'Verein', 'verein'], ['training.html', 'Training', 'training'],
+    ['athleten.html', 'Athleten', 'athleten'], ['news.html', 'News', 'news'], ['instagram.html', 'Instagram', 'instagram'], ['kontakt.html', 'Kontakt', 'kontakt']
+  ];
   var header = document.getElementById('site-header');
   if (header) {
     header.className = 'site';
@@ -28,6 +32,8 @@
       '</nav></div></div>';
     var t = header.querySelector('.menu-toggle'), m = header.querySelector('.menu');
     t.addEventListener('click', function () { var o = m.classList.toggle('open'); t.setAttribute('aria-expanded', o); });
+    var onScroll = function () { header.classList.toggle('scrolled', window.scrollY > 8); };
+    window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
   }
 
   // ---------- Fusszeile ----------
@@ -42,12 +48,12 @@
       '<div><h4>Training</h4><ul>' + S.training.map(function (d) { return '<li>' + d.day + ' ' + d.time + '</li>'; }).join('') + '</ul></div>' +
       '<div><h4>Folge uns</h4><ul><li><a href="https://www.instagram.com/' + S.contact.instagram + '/" target="_blank" rel="noopener">Instagram @' + S.contact.instagram + '</a></li>' +
       '<li><a href="kontakt.html">Kontakt</a></li></ul></div>' +
-      '</div><div class="foot-bottom"><span>© ' + new Date().getFullYear() + ' Usserschwyz Athletics</span><a href="impressum.html">Impressum</a></div></div>';
+      '</div><div class="foot-bottom"><span>© ' + new Date().getFullYear() + ' Usserschwyz Athletics</span><span><a href="impressum.html">Impressum</a> · <a href="admin.html">Login</a></span></div></div>';
   }
 
-  // ---------- Athleten-Karte & Profil ----------
+  // ---------- Athleten ----------
   function athleteCard(a, idx) {
-    var b = el('button', 'athlete'); b.type = 'button';
+    var b = el('button', 'athlete'); b.type = 'button'; b.setAttribute('data-reveal', '');
     b.appendChild(media(a.photo, a.name));
     var info = el('div'); info.style.cssText = 'display:flex;flex-direction:column;gap:4px';
     info.appendChild(el('h3', null, a.name));
@@ -79,8 +85,7 @@
   function openProfile(i, from) {
     if (!modal) buildModal();
     var a = S.athletes[i]; lastFocus = from;
-    var mc = modal.querySelector('#d-media'); mc.innerHTML = '';
-    var mm = media(a.photo, a.name); mc.replaceWith(mm); mm.id = 'd-media';
+    var mm = media(a.photo, a.name); mm.id = 'd-media'; modal.querySelector('#d-media').replaceWith(mm);
     modal.querySelector('#d-name').textContent = a.name;
     modal.querySelector('#d-club').textContent = a.club;
     var bio = modal.querySelector('#d-bio'); bio.textContent = a.bio || ''; bio.hidden = !a.bio;
@@ -92,50 +97,75 @@
     var wa = modal.querySelector('#d-wa');
     if (a.wa) { wa.href = 'https://worldathletics.org/athletes/switzerland/' + a.wa; wa.hidden = false; } else wa.hidden = true;
     modal.hidden = false; document.body.style.overflow = 'hidden';
+    requestAnimationFrame(function () { modal.classList.add('open'); });
     modal.querySelector('.close').focus();
   }
-  function closeProfile() { modal.hidden = true; document.body.style.overflow = ''; if (lastFocus) lastFocus.focus(); }
+  function closeProfile() { modal.classList.remove('open'); modal.hidden = true; document.body.style.overflow = ''; if (lastFocus) lastFocus.focus(); }
 
-  // ---------- News-Karte ----------
+  // ---------- News (aus dem Admin-Bereich) ----------
   function newsCard(n) {
-    var a = el('article', 'news-card');
-    a.appendChild(media(n.photo, null));
+    var a = el('article', 'news-card'); a.setAttribute('data-reveal', '');
+    a.appendChild(media(n.image, n.image ? n.title : null));
     var t = el('div', 'txt');
     var time = el('time', null, fmtDate(n.date) + (n.place ? ' · ' + n.place : '')); time.setAttribute('datetime', n.date);
-    t.appendChild(time); t.appendChild(el('h3', null, n.title)); t.appendChild(el('p', null, n.text));
+    t.appendChild(time); t.appendChild(el('h3', null, n.title));
+    String(n.text || '').split(/\n{2,}/).forEach(function (para) { t.appendChild(el('p', null, para)); });
     a.appendChild(t); return a;
+  }
+  function loadNews(target, limit, emptyEl, wrapperToHide) {
+    fetch('/api/news').then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; }).then(function (list) {
+      target.innerHTML = '';
+      (limit ? list.slice(0, limit) : list).forEach(function (n) { target.appendChild(newsCard(n)); });
+      if (emptyEl) emptyEl.hidden = list.length > 0;
+      if (wrapperToHide) wrapperToHide.hidden = list.length === 0;
+      observe(target);
+    });
+  }
+
+  // ---------- Instagram (offizielle Einbettung einzelner Posts) ----------
+  function loadInsta(target, limit, emptyEl) {
+    fetch('/api/insta').then(function (r) { return r.ok ? r.json() : []; }).catch(function () { return []; }).then(function (list) {
+      target.innerHTML = '';
+      if (emptyEl) emptyEl.hidden = list.length > 0;
+      if (!list.length) return;
+      (limit ? list.slice(0, limit) : list).forEach(function (url) {
+        var cell = el('div', 'insta-cell');
+        var bq = el('blockquote', 'instagram-media');
+        bq.setAttribute('data-instgrm-permalink', url); bq.setAttribute('data-instgrm-version', '14');
+        var a = el('a', null, 'Post auf Instagram ansehen'); a.href = url; a.target = '_blank'; a.rel = 'noopener';
+        bq.appendChild(a); cell.appendChild(bq); target.appendChild(cell);
+      });
+      if (window.instgrm) window.instgrm.Embeds.process();
+      else { var s = el('script'); s.async = true; s.src = 'https://www.instagram.com/embed.js'; document.body.appendChild(s); }
+    });
   }
 
   // ---------- Seiteninhalte ----------
   function fill(id, fn) { var n = document.getElementById(id); if (n) fn(n); }
 
-  fill('home-athletes', function (g) { S.athletes.slice(0, 4).forEach(function (a, i) { g.appendChild(athleteCard(a, i)); }); });
-  fill('home-news', function (g) { S.news.slice(0, 3).forEach(function (n) { g.appendChild(newsCard(n)); }); });
-  fill('all-news', function (g) { S.news.forEach(function (n) { g.appendChild(newsCard(n)); }); });
+  fill('home-news', function (g) { loadNews(g, 3, null, document.getElementById('home-news-section')); });
+  fill('all-news', function (g) { loadNews(g, 0, document.getElementById('news-empty')); });
+  fill('insta-feed', function (g) { loadInsta(g, 0, document.getElementById('insta-empty')); });
+  fill('home-insta', function (g) { loadInsta(g, 3, null); });
   fill('athlete-count', function (n) { n.textContent = S.athletes.length; });
+  fill('contact-email', function (n) { n.textContent = S.contact.email; n.href = 'mailto:' + S.contact.email; });
 
   fill('training-days', function (g) {
     S.training.forEach(function (d) {
-      var c = el('div', 'day'); c.appendChild(el('span', 'd', d.day)); c.appendChild(el('span', 't', d.time)); c.appendChild(el('span', 'p', d.place)); g.appendChild(c);
+      var c = el('div', 'day'); c.setAttribute('data-reveal', '');
+      c.appendChild(el('span', 'd', d.day)); c.appendChild(el('span', 't', d.time)); c.appendChild(el('span', 'p', d.place)); g.appendChild(c);
     });
   });
   fill('trainers', function (g) {
     S.trainers.forEach(function (p) {
-      var c = el('div', 'person'); c.appendChild(media(p.photo, p.name));
+      var c = el('div', 'person'); c.setAttribute('data-reveal', ''); c.appendChild(media(p.photo, p.name));
       var t = el('div'); t.appendChild(el('h3', null, p.name)); t.appendChild(el('p', 'muted', p.role)); c.appendChild(t); g.appendChild(c);
     });
   });
-  fill('insta-grid', function (g) {
-    if (!S.instagram.length) { g.hidden = true; return; }
-    S.instagram.slice(0, 6).forEach(function (p) { var a = el('a'); a.href = p.url; a.target = '_blank'; a.rel = 'noopener'; var i = el('img'); i.src = p.image; i.alt = 'Instagram-Post'; i.loading = 'lazy'; a.appendChild(i); g.appendChild(a); });
-  });
-  fill('contact-email', function (n) { n.textContent = S.contact.email; n.href = 'mailto:' + S.contact.email; });
 
-  // Athletenseite mit Filter und Suche
   fill('all-athletes', function (g) {
     var chips = document.getElementById('group-chips'), search = document.getElementById('athlete-search'), empty = document.getElementById('athlete-empty');
-    var active = 'Alle';
-    var groups = ['Alle'];
+    var active = 'Alle', groups = ['Alle'];
     S.athletes.forEach(function (a) { (a.groups || []).forEach(function (x) { if (groups.indexOf(x) < 0) groups.push(x); }); });
     groups.forEach(function (gname) {
       var c = el('button', 'chip', gname); c.type = 'button'; c.setAttribute('aria-pressed', gname === active);
@@ -148,10 +178,64 @@
       S.athletes.forEach(function (a, i) {
         if (active !== 'Alle' && (a.groups || []).indexOf(active) < 0) return;
         if (q && (a.name + ' ' + a.club).toLowerCase().indexOf(q) < 0) return;
-        g.appendChild(athleteCard(a, i)); n++;
+        var c = athleteCard(a, i); c.style.setProperty('--d', (n % 4) * 70 + 'ms'); g.appendChild(c); n++;
       });
       empty.hidden = n > 0;
+      observe(g);
     }
     render();
   });
+
+  // ---------- Scroll-Animationen ----------
+  var io = null;
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('anim');
+    io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  }
+  function observe(root) {
+    var nodes = (root || document).querySelectorAll('[data-reveal]:not(.in)');
+    if (!io) { nodes.forEach(function (n) { n.classList.add('in'); }); return; }
+    // Geschwister gestaffelt einblenden
+    nodes.forEach(function (n) {
+      if (!n.style.getPropertyValue('--d') && n.parentElement) {
+        var sib = Array.prototype.filter.call(n.parentElement.children, function (c) { return c.hasAttribute('data-reveal'); });
+        n.style.setProperty('--d', Math.min(sib.indexOf(n), 5) * 80 + 'ms');
+      }
+      io.observe(n);
+    });
+  }
+  observe(document);
+
+  // Zahlen hochzählen
+  function countUp(node) {
+    var target = parseInt(node.getAttribute('data-count'), 10), pre = node.getAttribute('data-prefix') || '', suf = node.getAttribute('data-suffix') || '';
+    if (reduceMotion || !target) { node.textContent = pre + target + suf; return; }
+    var start = null, dur = 1200, from = target > 100 ? target - 40 : 0;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+      node.textContent = pre + Math.round(from + (target - from) * e) + suf;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = document.querySelectorAll('[data-count]');
+  if (counters.length) {
+    if (io) {
+      var cio = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { countUp(e.target); cio.unobserve(e.target); } }); }, { threshold: 0.6 });
+      counters.forEach(function (c) { cio.observe(c); });
+    } else counters.forEach(countUp);
+  }
+
+  // Bahnlinien im Kopfbereich bewegen sich leicht beim Scrollen
+  var lanes = document.querySelector('.lanes');
+  if (lanes && !reduceMotion) {
+    var ticking = false;
+    window.addEventListener('scroll', function () {
+      if (ticking) return; ticking = true;
+      requestAnimationFrame(function () { lanes.style.transform = 'translate3d(' + (-window.scrollY * 0.25) + 'px,' + (window.scrollY * 0.12) + 'px,0)'; ticking = false; });
+    }, { passive: true });
+  }
 })();

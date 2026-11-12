@@ -1,4 +1,5 @@
-// Inhalte der Webseite. Neue Athleten, News oder Instagram-Posts hier eintragen.
+// Inhalte der Webseite: Kontakt, Trainer, Trainingszeiten und Athleten.
+// News und Instagram-Posts werden im Admin-Bereich (/admin.html) verwaltet.
 // Optional pro Athlet: photo: 'img/vorname-nachname.jpg', bio: 'Text…', wins: ['2026 – …']
 
 window.SITE = {
@@ -40,20 +41,5 @@ window.SITE = {
       pbs: [['200 m', '25.48'], ['100 m', '12.73'], ['150 m', '19.14']] },
     { name: 'Jana Schneider', club: 'STV Wangen SZ', groups: ['Hürden', 'Sprint'],
       pbs: [['100 m Hürden (U18)', '15.68'], ['200 m', '26.72'], ['100 m', '13.08']] }
-  ],
-
-  // Neueste News zuoberst. Optional: photo: 'img/news-….jpg'
-  news: [
-    { date: '2026-07-25', place: 'Zürich', title: 'Elis läuft 400 m in 49.63',
-      text: 'Im Letzigrund bleibt Elis Schönbächler erstmals unter 50 Sekunden. Am selben Tag egalisiert Lia Flattich über 400 m Hürden ihre Bestzeit von 1:01.29.' },
-    { date: '2026-06-14', place: 'Bern', title: 'Livia mit 56.96 über 400 m',
-      text: 'Im Wankdorf stellt Livia Casagrande über die Stadionrunde eine neue Bestzeit auf.' },
-    { date: '2026-06-13', place: 'Pfungstadt', title: 'Miro unterbietet 1:53',
-      text: 'Miro Flattich läuft über 800 m 1:52.63, seine schnellste Zeit bisher.' },
-    { date: '2026-06-03', place: 'Freienbach', title: 'Heimmeeting mit vielen Startenden',
-      text: 'Am Freienbacher Abendmeeting war die halbe Trainingsgruppe am Start, unter anderem Lia, Lara, Pauline und Jana.' }
-  ],
-
-  // Instagram-Posts: { image: 'img/insta-1.jpg', url: 'https://www.instagram.com/p/…/' }
-  instagram: []
+  ]
 };

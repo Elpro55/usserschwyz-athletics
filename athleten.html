@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Athleten – Usserschwyz Athletics</title>
 <meta name="description" content="Alle Athletinnen und Athleten von Usserschwyz Athletics mit Bestleistungen.">
+<meta property="og:title" content="Athleten – Usserschwyz Athletics">
+<meta property="og:description" content="Alle Athletinnen und Athleten von Usserschwyz Athletics mit Bestleistungen.">
+<meta property="og:type" content="website">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +19,8 @@
 
 <main>
   <section class="page-hero">
-    <div class="wrap">
+    <div class="lanes" aria-hidden="true"></div>
+    <div class="wrap intro">
       <span class="eyebrow">Athleten</span>
       <h1>Das Team</h1>
       <p><span id="athlete-count"></span> Athletinnen und Athleten aus sieben Vereinen. Klick auf ein Profil für alle Bestleistungen.</p>
@@ -27,9 +31,7 @@
     <div class="wrap">
       <div class="toolbar">
         <div class="chips" id="group-chips" role="group" aria-label="Nach Disziplin filtern"></div>
-        <label style="display:block"><span class="muted" style="position:absolute;left:-9999px">Athlet suchen</span>
-          <input class="search" id="athlete-search" type="search" placeholder="Name oder Verein suchen">
-        </label>
+        <input class="search" id="athlete-search" type="search" placeholder="Name oder Verein suchen" aria-label="Athlet suchen">
       </div>
       <div class="athletes" id="all-athletes"></div>
       <p class="empty" id="athlete-empty" hidden>Niemand gefunden. Versuch es mit einem anderen Namen oder Filter.</p>

@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Usserschwyz Athletics – Leichtathletik aus Ausserschwyz</title>
+<title>Usserschwyz Athletics</title>
 <meta name="description" content="Leichtathletik-Trainingsgruppe aus Ausserschwyz. Sprint, Sprung und Mittelstrecke, U18 bis Aktive, Training in Pfäffikon und im Chrummen.">
 <meta property="og:title" content="Usserschwyz Athletics">
-<meta property="og:description" content="Leichtathletik aus Ausserschwyz. Sprint, Sprung und Mittelstrecke seit 2013.">
+<meta property="og:description" content="Leichtathletik-Trainingsgruppe aus Ausserschwyz. Sprint, Sprung und Mittelstrecke, U18 bis Aktive, Training in Pfäffikon und im Chrummen.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://usserschwyz-athletics.com/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -20,92 +20,79 @@
 
 <main>
   <section class="hero">
+    <div class="lanes" aria-hidden="true"></div>
     <div class="wrap">
-      <div>
+      <div class="intro">
         <p class="eyebrow" style="color:#F3A3AF">Leichtathletik · Ausserschwyz</p>
         <h1 style="margin-top:14px">Gemeinsam schneller.</h1>
         <p class="lead">Seit 2013 trainieren bei Usserschwyz Athletics Athletinnen und Athleten aus sieben Vereinen zusammen, von der U18 bis zu den Aktiven.</p>
         <div class="actions">
           <a class="btn light" href="athleten.html">Unsere Athleten</a>
-          <a class="btn ghost" href="verein.html">Training &amp; Verein</a>
+          <a class="btn ghost" href="training.html">Trainingszeiten</a>
         </div>
       </div>
-      <div class="media" role="img" aria-label="Teamfoto folgt"></div>
+      <div class="media" role="img" aria-label="Teamfoto folgt" data-reveal="scale"></div>
     </div>
     <div class="wrap facts-wrap">
       <div class="facts">
-        <div><b>2013</b><span>gegründet</span></div>
-        <div><b>~20</b><span>Athletinnen &amp; Athleten</span></div>
-        <div><b>7</b><span>Stammvereine</span></div>
-        <div><b>3×</b><span>Training pro Woche</span></div>
+        <div><b data-count="2013">2013</b><span>gegründet</span></div>
+        <div><b data-count="20" data-prefix="~">~20</b><span>Athletinnen &amp; Athleten</span></div>
+        <div><b data-count="7">7</b><span>Stammvereine</span></div>
+        <div><b data-count="3" data-suffix="×">3×</b><span>Training pro Woche</span></div>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
-      <div class="grid-3">
-        <a class="tile" href="verein.html">
-          <span class="eyebrow">Verein &amp; Training</span>
-          <h3>Wer wir sind und wann wir trainieren</h3>
-          <p>Trainingszeiten, Trainingsorte und unsere Trainer.</p>
-          <span class="link-more">Mehr erfahren →</span>
+      <div class="grid-4">
+        <a class="tile" href="verein.html" data-reveal>
+          <span class="eyebrow">Verein</span>
+          <h3>Wer wir sind</h3>
+          <p>Eine Trainingsgruppe aus sieben Vereinen der Region.</p>
+          <span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
-        <a class="tile" href="athleten.html">
+        <a class="tile" href="training.html" data-reveal>
+          <span class="eyebrow">Training</span>
+          <h3>Wann und wo</h3>
+          <p>Dreimal pro Woche in Pfäffikon und im Chrummen.</p>
+          <span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        </a>
+        <a class="tile" href="athleten.html" data-reveal>
           <span class="eyebrow">Athleten</span>
-          <h3>Das Team mit allen Bestleistungen</h3>
-          <p>Profile, Bestzeiten und Links zu World Athletics.</p>
-          <span class="link-more">Zum Team →</span>
+          <h3>Das Team</h3>
+          <p>Profile, Bestleistungen und World-Athletics-Links.</p>
+          <span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
-        <a class="tile" href="news.html">
+        <a class="tile" href="news.html" data-reveal>
           <span class="eyebrow">News</span>
-          <h3>Resultate und Geschichten aus der Saison</h3>
-          <p>Neue Bestzeiten, Meetings und was sonst passiert.</p>
-          <span class="link-more">Zu den News →</span>
+          <h3>Aus der Saison</h3>
+          <p>Resultate, Meetings und Neuigkeiten.</p>
+          <span class="arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </a>
       </div>
     </div>
   </section>
 
-  <section class="section soft">
+  <section class="section soft" id="home-news-section" hidden>
     <div class="wrap">
       <div class="sec-head">
-        <div><span class="eyebrow">Neueste Resultate</span><h2 class="h2">Aus der Saison</h2></div>
+        <div><span class="eyebrow">Neuigkeiten</span><h2 class="h2">Aktuell</h2></div>
         <a class="link-more" href="news.html">Alle News →</a>
       </div>
       <div class="news-grid" id="home-news"></div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><span class="eyebrow">Team</span><h2 class="h2">Einige unserer Athletinnen und Athleten</h2></div>
-        <a class="link-more" href="athleten.html">Alle Athleten →</a>
-      </div>
-      <div class="athletes" id="home-athletes"></div>
-    </div>
-  </section>
-
   <section class="section tight">
     <div class="wrap">
-      <div class="cta">
+      <div class="cta" data-reveal="scale">
         <div>
           <h2>Lust mitzutrainieren?</h2>
-          <p>Wir trainieren montags und mittwochs am Abend sowie am Samstagmorgen in Pfäffikon und im Chrummen.</p>
+          <p>Wir trainieren montags und mittwochs am Abend sowie am Samstagmorgen.</p>
         </div>
         <a class="btn light" href="kontakt.html">Probetraining anfragen</a>
       </div>
-    </div>
-  </section>
-
-  <section class="section tight" style="padding-top:0">
-    <div class="wrap">
-      <div class="sec-head" style="margin-bottom:24px">
-        <div><span class="eyebrow">Instagram</span><h2 class="h2">@ua_sprint_team</h2></div>
-        <a class="btn" href="https://www.instagram.com/ua_sprint_team/" target="_blank" rel="noopener">Folge uns</a>
-      </div>
-      <div class="insta" id="insta-grid"></div>
     </div>
   </section>
 </main>

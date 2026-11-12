@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>News – Usserschwyz Athletics</title>
 <meta name="description" content="Resultate und Neuigkeiten von Usserschwyz Athletics.">
+<meta property="og:title" content="News – Usserschwyz Athletics">
+<meta property="og:description" content="Resultate und Neuigkeiten von Usserschwyz Athletics.">
+<meta property="og:type" content="website">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +19,8 @@
 
 <main>
   <section class="page-hero">
-    <div class="wrap">
+    <div class="lanes" aria-hidden="true"></div>
+    <div class="wrap intro">
       <span class="eyebrow">News</span>
       <h1>Aus der Saison</h1>
       <p>Neue Bestzeiten, Meetings und alles, was bei uns läuft.</p>
@@ -26,17 +30,9 @@
   <section class="section">
     <div class="wrap">
       <div class="news-grid" id="all-news"></div>
-    </div>
-  </section>
-
-  <section class="section tight" style="padding-top:0">
-    <div class="wrap">
-      <div class="cta">
-        <div>
-          <h2>Mehr auf Instagram</h2>
-          <p>Bilder und Videos von Training und Wettkämpfen gibt es auf @ua_sprint_team.</p>
-        </div>
-        <a class="btn light" href="https://www.instagram.com/ua_sprint_team/" target="_blank" rel="noopener">Zu Instagram</a>
+      <div class="empty-box" id="news-empty" hidden>
+        <p>Noch keine News. Bald gibt es hier Resultate und Geschichten aus der Saison.</p>
+        <a class="link-more" href="instagram.html">Bis dahin auf Instagram vorbeischauen →</a>
       </div>
     </div>
   </section>
