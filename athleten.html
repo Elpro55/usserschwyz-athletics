@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="de-CH">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Athleten – Usserschwyz Athletics</title>
+<meta name="description" content="Alle Athletinnen und Athleten von Usserschwyz Athletics mit Bestleistungen.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="athleten">
+<header id="site-header"></header>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Athleten</span>
+      <h1>Das Team</h1>
+      <p><span id="athlete-count"></span> Athletinnen und Athleten aus sieben Vereinen. Klick auf ein Profil für alle Bestleistungen.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="toolbar">
+        <div class="chips" id="group-chips" role="group" aria-label="Nach Disziplin filtern"></div>
+        <label style="display:block"><span class="muted" style="position:absolute;left:-9999px">Athlet suchen</span>
+          <input class="search" id="athlete-search" type="search" placeholder="Name oder Verein suchen">
+        </label>
+      </div>
+      <div class="athletes" id="all-athletes"></div>
+      <p class="empty" id="athlete-empty" hidden>Niemand gefunden. Versuch es mit einem anderen Namen oder Filter.</p>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+<script src="data.js"></script>
+<script src="assets/main.js"></script>
+</body>
+</html>
