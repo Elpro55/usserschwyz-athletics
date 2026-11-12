@@ -23,10 +23,8 @@ window.SITE = {
     { day: 'Samstag', time: '10:30–13:00', place: 'Alte Kanti, Pfäffikon' }
   ],
 
-  // Termine für die Tabelle auf der Startseite. Vergangene Termine verschwinden automatisch.
-  // from/to im Format JJJJ-MM-TT, to nur bei mehrtägigen Anlässen. time und place sind optional.
+  // Termine werden im Admin-Bereich (/admin.html) erfasst. Hier nur als Reserve.
   events: [
-    { from: '2026-11-14', to: '2026-11-15', title: 'Regionalkader-Zusammenzug', time: '', place: '' }
   ],
 
   athletes: [
