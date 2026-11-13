@@ -597,3 +597,21 @@ footer.site{font-size:15px}
   .group{padding-left:84px}
   .gnum{width:60px;font-size:44px}
 }
+
+/* Zweispaltige Textabschnitte: Titel links, Inhalt rechts */
+.split-text{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:20px 56px;align-items:start}
+.st-body{display:flex;flex-direction:column;gap:18px;max-width:720px}
+.st-body .lead{max-width:68ch}
+.train-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:48px 72px;align-items:start}
+.train-grid .h2s{margin-bottom:18px}
+.train-grid aside .groups{grid-template-columns:1fr;max-width:none}
+.train-grid aside .next{margin-bottom:40px}
+.train-grid .note{margin-top:18px}
+@media (max-width:860px){
+  .split-text,.train-grid{grid-template-columns:1fr}
+  .train-grid aside{order:-1}
+  .train-grid aside .h2s,.train-grid aside .groups{display:none}
+  .train-grid aside .next{margin-bottom:0}
+}
+.brand b{white-space:nowrap}
+@media (max-width:640px){.brand b{font-size:20px}.brand small{font-size:12px}.brand .logo{width:42px;height:42px}}
