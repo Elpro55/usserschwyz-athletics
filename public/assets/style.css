@@ -478,3 +478,122 @@ a.athlete{text-decoration:none;color:inherit}
   .foot-grid>div:last-child{grid-column:1/-1}
   .foot-grid>div:last-child ul{flex-direction:row;flex-wrap:wrap;gap:8px 20px}
 }
+
+/* ---------------------------------------------------------------
+   Gestaltung 2: Stadion-Typografie auf Weiss
+   Barlow Condensed für Titel und Zeiten (wie Startnummern und
+   Anzeigetafeln), Barlow für Text. Weiss, Marineblau, Tartanrot.
+   --------------------------------------------------------------- */
+:root{
+  --display:'Barlow Condensed','Arial Narrow',system-ui,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --line:#DADDE3; --soft:#F2F3F5;
+}
+body{background:#fff;font-size:17px;line-height:1.6}
+.section,.page-hero,header.site{background:#fff}
+.section.soft{background:var(--soft)}
+header.site{border-bottom:1px solid var(--line)}
+h1,h2,h3{letter-spacing:0}
+
+/* Kopfzeile */
+.brand b{font-size:23px;font-weight:700;letter-spacing:.015em;text-transform:uppercase;line-height:1}
+.brand small{font-size:13px;margin-top:3px}
+.menu a{font-size:16px}
+.menu a[aria-current="page"]{box-shadow:inset 0 -3px 0 var(--accent)}
+
+/* Seitenkopf */
+.page-hero{padding-block:64px 0}
+.page-hero .wrap{padding-bottom:26px}
+.page-hero h1{font-weight:800;font-size:clamp(50px,7.6vw,100px);line-height:.9;letter-spacing:-.008em;text-transform:uppercase}
+.page-hero p{font-size:18px;margin-top:6px}
+.lane-band{height:21px;border:0;box-shadow:none;background:linear-gradient(#C8102E 0 9px,#fff 9px 12px,#C8102E 12px)}
+.apparatus{bottom:21px}
+
+/* Titel in Abschnitten */
+.h2s{font-size:34px;font-weight:700;line-height:1.02;letter-spacing:.005em;text-transform:uppercase}
+.sec-head{margin-bottom:28px;align-items:center}
+.link-more{text-decoration:underline;text-underline-offset:4px}
+.lead{font-size:19px;line-height:1.65}
+.row-head a{text-underline-offset:4px}
+
+/* Schaltflächen */
+.btn{font-family:var(--display);font-size:19px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:10px 22px;border-radius:2px}
+
+/* Gruppen */
+.group{border-radius:2px;padding:26px 26px 26px 96px}
+.group .h2s{font-size:34px}
+.group .muted{font-size:17px}
+.gnum{font-family:var(--display);font-size:54px;width:70px}
+
+/* Tabellen wie Resultatlisten */
+table.list{font-size:17px}
+table.list th{font-size:14px;font-weight:500;padding-bottom:8px}
+table.list td{padding-block:14px}
+table.list td.num{font-size:23px;line-height:1.1}
+table.list td,.contact-list > div,.empty-box,.wins-row,.pb-main{border-color:var(--line)}
+table.list tr.today td{background:#FDF1F3}
+
+/* Nächstes Training */
+.next{border-left-width:4px;padding-left:18px}
+.next .k{font-size:15px}
+.next .v{font-size:38px;font-weight:700;line-height:1.05;text-transform:uppercase}
+
+/* Athleten */
+.athletes{gap:36px 22px}
+.athlete{gap:12px}
+.athlete .media,.media{border-radius:2px}
+.media{background:#E6E8EC}
+.media .initials{font-family:var(--display);color:#7A8599}
+.athlete h3{font-size:27px;font-weight:700;line-height:1;text-transform:uppercase}
+.club{font-size:15px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--label)}
+.a-info{gap:3px}
+.pb-main{font-size:15px;padding-top:9px;align-items:center}
+.pb-main b{font-size:25px;font-weight:700;line-height:1}
+.media.pbtile{border-bottom-width:6px;padding:18px}
+.pbtile .pt-d{font-size:16px}
+.pbtile .pt-v{font-size:clamp(54px,5.8vw,76px);font-weight:800;letter-spacing:0;line-height:.9}
+.chip{font-size:15px;border-radius:2px;padding:7px 14px}
+.search{border-radius:2px;background:#fff}
+
+/* Profil */
+.dialog{border-radius:4px}
+.d-top h2{font-size:46px;font-weight:800;line-height:.92;text-transform:uppercase}
+.d-top .club{display:block;margin-top:6px}
+.block .lbl{font-size:15px;font-weight:600;letter-spacing:0;text-transform:none;color:var(--label)}
+.pb-row{align-items:center;padding:9px 0}
+.pb-row b{font-size:26px;line-height:1}
+.close{border-radius:2px}
+.wa-btn{border-radius:2px}
+
+/* News, Personen, Kontakt */
+.news-card{border-radius:2px}
+.news-card h3{font-size:30px;line-height:1.02;text-transform:uppercase}
+.news-card time{font-size:14px;font-weight:500;letter-spacing:0;text-transform:none}
+.person{border-radius:2px}
+.person h3{font-size:26px;text-transform:uppercase}
+.contact-list{border-top:2px solid var(--ink)}
+.contact-list dt{font-weight:500;color:var(--label)}
+.contact-list dd{color:var(--ink);font-weight:500}
+.empty-box{border-style:solid;border-radius:2px;background:#fff}
+.prose h2{font-size:28px;text-transform:uppercase}
+
+/* Fusszeile */
+footer.site{font-size:15px}
+.foot-grid h4{font-size:19px;font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+.foot-grid .brand b{font-size:24px}
+
+@media (max-width:640px){
+  body{font-size:16px}
+  .page-hero{padding-top:44px}
+  .athletes{gap:28px 14px}
+  .athlete h3{font-size:22px}
+  .club{font-size:13px}
+  .pb-main b{font-size:21px}
+  .pbtile .pt-v{font-size:44px}
+  .pbtile .pt-d{font-size:13px}
+  .media.pbtile{padding:12px}
+  .d-top h2{font-size:36px}
+  .next .v{font-size:32px}
+  .group{padding-left:84px}
+  .gnum{width:60px;font-size:44px}
+}

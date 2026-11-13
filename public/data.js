@@ -7,13 +7,11 @@ window.SITE = {
   groups: ['Sprint', 'Sprung'],
 
   contact: {
-    name: 'Egon Flattich',
     email: 'kontakt@usserschwyz-athletics.com',
     instagram: 'ua_sprint_team'
   },
 
   trainers: [
-    { name: 'Egon Flattich', role: 'Sprint, Lauf und Hürden · Kontaktperson' },
     { name: 'Arsene Formaz', role: 'Sprung' }
   ],
 
