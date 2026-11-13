@@ -422,3 +422,59 @@ html.anim .apparatus{opacity:0;transform:translateY(14px);animation:apIn .8s cub
 .lane-band{background:#C8102E;border-top:3px solid #fff;box-shadow:inset 0 -3px 0 #fff}
 .apparatus{bottom:22px;height:clamp(56px,6vw,80px)}
 .lane-tag{display:none}
+
+/* ---------------------------------------------------------------
+   Feinschliff: Athletenkacheln, Profile, Erfolge, Handy-Ansicht
+   --------------------------------------------------------------- */
+html,body{overflow-x:clip}
+a.athlete{text-decoration:none;color:inherit}
+.a-info{display:flex;flex-direction:column;gap:4px}
+.pb-main{border-top-color:#D9D4CB}
+
+/* Kachel ohne Foto: Bestleistung statt leerer Fläche */
+.media.pbtile{background:#14213D;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;padding:18px 18px 16px;border-bottom:5px solid var(--accent)}
+.pbtile .pt-d{font-size:14px;font-weight:500;color:#AEBBD0}
+.pbtile .pt-v{font-family:var(--display);font-weight:800;font-size:clamp(34px,4.2vw,46px);line-height:1;letter-spacing:-.03em;color:#fff;font-variant-numeric:tabular-nums}
+.athlete:hover .pbtile{background:#1B2B4E}
+
+/* Profil ohne Foto: keine leere Bildspalte */
+.dialog.nophoto{grid-template-columns:1fr;max-width:620px}
+.dialog.nophoto .media{display:none}
+.d-body .lead{font-size:17px}
+
+/* Erfolge (Vereinsseite) */
+.wins-list{border-top:2px solid var(--ink);max-width:900px}
+.wins-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.2fr);gap:8px 32px;padding:22px 0;border-bottom:1px solid #D9D4CB}
+.wins-who{display:flex;flex-direction:column;gap:4px}
+.wins-who a{font-family:var(--display);font-weight:700;font-size:19px;text-decoration:none;color:var(--ink)}
+.wins-who a:hover{color:var(--accent)}
+.wins-row .wins{padding-left:18px}
+
+/* Nächstes Training und Kartenlink */
+.next{margin-bottom:40px}
+.maplink{margin-left:10px;font-size:13px;font-weight:600;color:var(--label)}
+.maplink:hover{color:var(--accent)}
+
+/* Kontakt: Listenwerte besser lesbar */
+.contact-list dd a{font-weight:600}
+
+@media (max-width:640px){
+  .athletes{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 14px}
+  .athlete{gap:10px}
+  .athlete h3{font-size:16px;line-height:1.25}
+  .club{font-size:11px}
+  .pb-main{font-size:13px}
+  .pb-main b{font-size:16px}
+  .media.pbtile{padding:12px 12px 10px}
+  .pbtile .pt-d{font-size:12px}
+  .pbtile .pt-v{font-size:30px}
+  .wins-row{grid-template-columns:1fr}
+  .modal{padding:12px}
+  .d-body{padding:22px}
+  .d-top h2{font-size:24px}
+  /* Fusszeile kompakter: Marke oben, darunter zwei Spalten */
+  .foot-grid{grid-template-columns:1fr 1fr;gap:28px 20px;padding-block:44px 28px}
+  .foot-grid>div:first-child{grid-column:1/-1}
+  .foot-grid>div:last-child{grid-column:1/-1}
+  .foot-grid>div:last-child ul{flex-direction:row;flex-wrap:wrap;gap:8px 20px}
+}

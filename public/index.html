@@ -8,6 +8,8 @@
 <meta property="og:title" content="Usserschwyz Athletics">
 <meta property="og:description" content="Trainingsgruppe für leistungsorientierte Leichtathletinnen und Leichtathleten.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://usserschwyz-athletics.com/assets/logo.png">
+<meta name="theme-color" content="#F4F1EC">
 <meta property="og:url" content="https://usserschwyz-athletics.com/">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,7 +29,13 @@
   .track{position:absolute;left:0;right:0;bottom:-360px;width:100%;height:calc(48% + 360px);z-index:1;overflow:visible}
   .track .lane{fill:none;stroke:#fff;stroke-width:3}
   .track .num{font-family:'Inter Tight',sans-serif;font-weight:700;font-size:26px;fill:#fff}
-  @media (max-width:640px){.cover .wrap{padding-top:22vh}.track{height:44%}}
+  /* Handy: Titel, darunter ein Stück Bahn, dann direkt die Termine */
+  @media (max-width:760px){
+    .cover{height:auto;min-height:0;max-height:none;overflow:hidden;display:flex;flex-direction:column}
+    .cover .wrap{order:1;width:100%;padding-top:112px;padding-bottom:30px}
+    .track{order:2;flex:none;position:relative;bottom:auto;left:auto;right:auto;display:block;width:200%;margin-left:-100%;height:250px;overflow:hidden}
+    .track .num{display:none}
+  }
   /* Nur dezent: Titel und Bahn blenden beim Laden kurz ein */
   @media (prefers-reduced-motion:no-preference){
     .cover h1 span{animation:softIn .6s ease both}
@@ -48,7 +56,13 @@
   /* Die bestehende Bahn reicht in einem einzigen Bogen bis neben die Termine. */
   .agenda{position:relative;z-index:3;background:transparent;margin-top:0;padding:38px 0 70px;min-height:460px}
   .agenda>.wrap{position:relative;z-index:2;padding-right:clamp(24px,9vw,145px)}
-  @media(max-width:640px){.agenda>.wrap{padding-right:24px}}
+  @media(max-width:760px){.agenda{min-height:0;padding:34px 0 44px}.agenda>.wrap{padding-right:24px}}
+  .next{margin:26px 0 0}
+  .home-athletes{background:#F4F1EC;padding-block:72px}
+  .home-athletes h2{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.03em;color:#14213D}
+  .home-athletes .row-head{margin-bottom:28px;align-items:flex-end}
+  .home-athletes .athletes{grid-template-columns:repeat(4,minmax(0,1fr))}
+  @media (max-width:860px){.home-athletes{padding-block:52px}.home-athletes .athletes{grid-template-columns:repeat(2,minmax(0,1fr))}}
   .about{background:#ECE7DF;padding-block:72px}
   .about .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:start}
   .about h2{font-family:'Inter Tight',sans-serif;font-weight:800;font-size:clamp(28px,3.6vw,40px);letter-spacing:-.03em;color:#14213D;margin-bottom:16px}
@@ -100,6 +114,7 @@
       </table>
     </div>
     <p class="note" id="events-empty" hidden>Zurzeit sind keine Termine eingetragen.</p>
+    <div class="next" id="next-training"><div class="k">Nächstes Training</div><div class="v"></div><div class="p"></div></div>
   </div>
 </section>
 
@@ -127,6 +142,13 @@
       <a class="group" href="training.html" data-reveal><span class="gnum">1</span><h3 class="h2s">Sprint</h3><p class="muted">Sprint, Hürden und Mittelstrecke</p><p class="gtrainer">Egon Flattich</p></a>
       <a class="group" href="training.html" data-reveal><span class="gnum">2</span><h3 class="h2s">Sprung</h3><p class="muted">Sprungdisziplinen</p><p class="gtrainer">Arsene Formaz</p></a>
     </div>
+  </div>
+</section>
+
+<section class="home-athletes">
+  <div class="wrap">
+    <div class="row-head"><h2>Athletinnen und Athleten</h2><a href="athleten.html">Alle ansehen</a></div>
+    <div class="athletes" id="home-athletes"></div>
   </div>
 </section>
 

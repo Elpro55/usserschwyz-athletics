@@ -4,7 +4,10 @@ Webseite der Leichtathletik-Trainingsgruppe Usserschwyz Athletics: https://usser
 
 ## Aufbau
 - `public/` – die Webseite: Seiten (`index.html`, `verein.html`, `training.html`, `athleten.html`, `news.html`, `instagram.html`, `kontakt.html`, `impressum.html`), `admin.html`, `data.js` und `assets/`
-- `public/data.js` – Kontakt, Trainer, Trainingszeiten, Athleten
+- `public/data.js` – Kontakt, Trainer, Trainingszeiten, Athleten (optional pro Athlet: `photo`, `bio`, `wins`; ohne Foto zeigt die Kachel die Bestleistung)
+- `public/img/` – Porträts der Athleten (Hochformat 4:5, ca. 560×700)
+- `public/404.html`, `robots.txt`, `sitemap.xml` – Fehlerseite und Suchmaschinen
+- Profil-Direktlink: `athleten.html#vorname-nachname`
 - `src/index.js` – Cloudflare Worker: beantwortet `/api/*`, liefert sonst die Dateien aus `public/`
 - `src/api/` – Login, News, Bilder und Instagram
 - `wrangler.jsonc` – Worker-Konfiguration

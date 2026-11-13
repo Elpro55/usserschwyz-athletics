@@ -113,15 +113,28 @@
   }
 
   // ---------- Athleten ----------
-  function athleteCard(a, idx) {
-    var b = el('button', 'athlete'); b.type = 'button'; b.setAttribute('data-reveal', '');
-    b.appendChild(media(a.photo, a.name));
-    var info = el('div'); info.style.cssText = 'display:flex;flex-direction:column;gap:4px';
+  function slug(name) {
+    return name.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  }
+  // Ohne Foto zeigt die Kachel die wichtigste Bestleistung statt einer leeren Fläche
+  function pbTile(a) {
+    var m = el('div', 'media pbtile');
+    if (a.pbs && a.pbs[0]) { m.appendChild(el('span', 'pt-d', a.pbs[0][0])); m.appendChild(el('span', 'pt-v', a.pbs[0][1])); }
+    else m.appendChild(el('span', 'pt-v', initials(a.name)));
+    return m;
+  }
+  function athleteCard(a, idx, asLink) {
+    var b = el(asLink ? 'a' : 'button', 'athlete');
+    if (asLink) b.href = 'athleten.html#' + slug(a.name); else b.type = 'button';
+    b.appendChild(a.photo ? media(a.photo, a.name) : pbTile(a));
+    var info = el('div', 'a-info');
     info.appendChild(el('h3', null, a.name));
     info.appendChild(el('span', 'club', a.club));
     b.appendChild(info);
-    if (a.pbs && a.pbs[0]) { var pb = el('div', 'pb-main'); pb.appendChild(el('span', null, a.pbs[0][0])); pb.appendChild(el('b', null, a.pbs[0][1])); b.appendChild(pb); }
-    b.addEventListener('click', function () { openProfile(idx, b); });
+    // Mit Foto: Hauptdisziplin unter dem Namen. Ohne Foto steht sie schon in der Kachel, darum die zweite.
+    var row = a.pbs && a.pbs[a.photo ? 0 : 1];
+    if (row) { var pb = el('div', 'pb-main'); pb.appendChild(el('span', null, row[0])); pb.appendChild(el('b', null, row[1])); b.appendChild(pb); }
+    if (!asLink) b.addEventListener('click', function () { openProfile(idx, b); });
     return b;
   }
 
@@ -147,6 +160,8 @@
     if (!modal) buildModal();
     var a = S.athletes[i]; lastFocus = from;
     var mm = media(a.photo, a.name); mm.id = 'd-media'; modal.querySelector('#d-media').replaceWith(mm);
+    modal.querySelector('.dialog').classList.toggle('nophoto', !a.photo);
+    try { history.replaceState(null, '', '#' + slug(a.name)); } catch (e) {}
     modal.querySelector('#d-name').textContent = a.name;
     modal.querySelector('#d-club').textContent = a.club;
     var bio = modal.querySelector('#d-bio'); bio.textContent = a.bio || ''; bio.hidden = !a.bio;
@@ -161,7 +176,11 @@
     requestAnimationFrame(function () { modal.classList.add('open'); });
     modal.querySelector('.close').focus();
   }
-  function closeProfile() { modal.classList.remove('open'); modal.hidden = true; document.body.style.overflow = ''; if (lastFocus) lastFocus.focus(); }
+  function closeProfile() {
+    modal.classList.remove('open'); modal.hidden = true; document.body.style.overflow = '';
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    if (lastFocus) lastFocus.focus();
+  }
 
   // ---------- News (aus dem Admin-Bereich) ----------
   function newsCard(n) {
@@ -286,7 +305,10 @@
     var today = new Date().getDay();
     S.training.forEach(function (d) {
       var tr = el('tr'); if (DAYNUM[d.day] === today) tr.className = 'today';
-      tr.appendChild(el('td', null, d.day)); tr.appendChild(el('td', 'num', d.time)); tr.appendChild(el('td', null, d.place));
+      tr.appendChild(el('td', null, d.day)); tr.appendChild(el('td', 'num', d.time));
+      var pl = el('td', null, d.place);
+      if (d.map) { var ml = el('a', 'maplink', 'Karte'); ml.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(d.map); ml.target = '_blank'; ml.rel = 'noopener'; pl.appendChild(ml); }
+      tr.appendChild(pl);
       tb.appendChild(tr);
     });
   });
@@ -313,6 +335,22 @@
     });
   });
 
+  fill('home-athletes', function (g) {
+    var order = S.athletes.map(function (a, i) { return i; }).sort(function (x, y) { return (S.athletes[y].photo ? 1 : 0) - (S.athletes[x].photo ? 1 : 0); });
+    order.slice(0, 4).forEach(function (i) { g.appendChild(athleteCard(S.athletes[i], i, true)); });
+  });
+  fill('wins-list', function (g) {
+    var any = false;
+    S.athletes.forEach(function (a) {
+      if (!a.wins || !a.wins.length) return; any = true;
+      var row = el('div', 'wins-row');
+      var who = el('div', 'wins-who'); var link = el('a', null, a.name); link.href = 'athleten.html#' + slug(a.name); who.appendChild(link); who.appendChild(el('span', 'club', a.club)); row.appendChild(who);
+      var ul = el('ul', 'wins'); a.wins.forEach(function (w) { ul.appendChild(el('li', null, w)); }); row.appendChild(ul);
+      g.appendChild(row);
+    });
+    var sec = document.getElementById('wins-section'); if (sec) sec.hidden = !any;
+  });
+
   fill('all-athletes', function (g) {
     var chips = document.getElementById('group-chips'), search = document.getElementById('athlete-search'), empty = document.getElementById('athlete-empty');
     var active = 'Alle', groups = ['Alle'].concat(S.groups || []);
@@ -334,8 +372,11 @@
       observe(g);
     }
     render();
-    var h = parseInt((location.hash || '').slice(1), 10);
-    if (!isNaN(h) && S.athletes[h]) openProfile(h, null);
+    // Direktlink auf ein Profil: athleten.html#vorname-nachname
+    var h = decodeURIComponent((location.hash || '').slice(1)), hi = -1;
+    S.athletes.forEach(function (a, i) { if (slug(a.name) === h) hi = i; });
+    if (hi < 0 && /^\d+$/.test(h) && S.athletes[+h]) hi = +h;
+    if (hi >= 0) openProfile(hi, null);
   });
 
   // ---------- Scroll-Animationen ----------

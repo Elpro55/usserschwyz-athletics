@@ -17,9 +17,10 @@ window.SITE = {
     { name: 'Arsene Formaz', role: 'Sprung' }
   ],
 
+  // map (optional): Suchbegriff für den Kartenlink neben dem Ort
   training: [
-    { day: 'Montag', time: '18:00–20:00', place: 'Weid, Pfäffikon' },
-    { day: 'Mittwoch', time: '18:00–20:00', place: 'Chrummen' },
+    { day: 'Montag', time: '18:00–20:00', place: 'Weid, Pfäffikon', map: 'Sportanlage Weid, Pfäffikon SZ' },
+    { day: 'Mittwoch', time: '18:00–20:00', place: 'Chrummen', map: 'Sportanlage Chrummen, Freienbach' },
     { day: 'Samstag', time: '10:30–13:00', place: 'Alte Kanti, Pfäffikon' }
   ],
 
