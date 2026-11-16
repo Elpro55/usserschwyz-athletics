@@ -23,7 +23,8 @@
 //                  Resultat:   'Gold' / 'Silber' / 'Bronze' an Meisterschaften, sonst '2. Rang',
 //                              'Final', 'Qualifikation', 'Teilnahme'; Disziplin nach Komma: 'Bronze, 400 m'
 //
-// Die Reihenfolge der Athleten hier ist egal: Die Seite sortiert selbst (mit Foto zuerst, dann nach Nachname).
+// Die Reihenfolge der Athleten hier ist egal: Die Seite sortiert selbst (erst Sprint, dann Sprung;
+// in jeder Gruppe mit Foto zuerst, dann nach Nachname).
 
 window.SITE = {
   // Trainingsgruppen: Sprint (inkl. Hürden und Mittelstrecke) und Sprung
@@ -33,9 +34,6 @@ window.SITE = {
     email: 'kontakt@usserschwyz-athletics.com',
     instagram: 'ua_sprint_team'
   },
-
-  // Link zur Umfrage, über die Athleten ihr Profil einreichen
-  profileForm: 'https://tally.so/r/EqdJ0o',
 
   trainers: [
     { name: 'Arsene Formaz', role: 'Sprung' }
@@ -81,7 +79,7 @@ window.SITE = {
         [2025, 'Schweizer Meisterschaft U18', 'Bronze, 400 m']
       ],
       bio: 'Ich mache seit 2024 Leichtathletik und mag die Kombination aus Geschwindigkeit und Ausdauer. Mein Ziel ist eine weitere Medaille an einer Schweizer Meisterschaft und neue persönliche Bestleistungen.' },
-    { name: 'Eleni Harakopidis', club: 'STV Wollerau-Bäch', groups: ['Sprung'],
+    { name: 'Eleni Harakopidis', club: 'STV Wollerau-Bäch', groups: ['Sprung'], wa: 'eleni-harakopidis-15329485',
       photo: 'img/eleni-harakopidis.jpg',
       pbs: [['Hochsprung', '1.60 m'], ['Weitsprung', '5.02 m']],
       wins: [
@@ -110,7 +108,7 @@ window.SITE = {
         [2026, 'Kader', 'Mitglied']
       ],
       bio: 'Ich mache seit 2023 Leichtathletik. Mir gefällt, wie vielfältig die Sportart ist. Mein Ziel ist ein Podest an der SM in den nächsten zwei Saisons.' },
-    { name: 'Gian Cavegn', club: 'STV Wollerau-Bäch', groups: ['Sprint'],
+    { name: 'Gian Cavegn', club: 'STV Wollerau-Bäch', groups: ['Sprint'], wa: 'gian-cavegn-15238136',
       pbs: [['100 m', '11.17']] },
     { name: 'Matteo Faggi', club: 'STV Wollerau-Bäch', groups: ['Sprint'], wa: 'matteo-faggi-15331627',
       pbs: [['200 m', '23.15'], ['100 m', '11.51']] },

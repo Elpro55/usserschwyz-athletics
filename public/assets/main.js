@@ -279,7 +279,6 @@
   });
   fill('home-insta', function (g) { loadInsta(g, 3, null); });
   fill('athlete-count', function (n) { n.textContent = S.athletes.length; });
-  fill('profile-form', function (n) { if (S.profileForm) n.href = S.profileForm; else n.parentNode.hidden = true; });
   fill('contact-email', function (n) { n.textContent = S.contact.email; n.href = 'mailto:' + S.contact.email; });
 
   // Termine (Startseite): aus dem Admin-Bereich plus data.js
@@ -367,12 +366,6 @@
     });
   });
 
-  fill('home-athletes', function (g) {
-    // Vier Athleten, bevorzugt mit Foto. Der Start wechselt jeden Tag, damit alle einmal vorne stehen.
-    var pool = ORDER.filter(function (i) { return S.athletes[i].photo; }); if (pool.length < 4) pool = ORDER.slice();
-    var day = Math.floor(Date.now() / 864e5);
-    for (var k = 0; k < Math.min(4, pool.length); k++) { var i = pool[(day + k) % pool.length]; g.appendChild(athleteCard(S.athletes[i], i, true)); }
-  });
   fill('all-athletes', function (g) {
     var chips = document.getElementById('group-chips'), search = document.getElementById('athlete-search'), empty = document.getElementById('athlete-empty');
     var active = 'Alle', groups = ['Alle'].concat(S.groups || []);
@@ -385,11 +378,15 @@
     search.addEventListener('input', render);
     function render() {
       g.innerHTML = ''; var q = search.value.trim().toLowerCase(), n = 0; shown = [];
-      ORDER.forEach(function (i) {
-        var a = S.athletes[i];
-        if (active !== 'Alle' && (a.groups || []).indexOf(active) < 0) return;
-        if (q && (a.name + ' ' + a.club).toLowerCase().indexOf(q) < 0) return;
-        g.appendChild(athleteCard(a, i)); shown.push(i); n++;
+      // Immer nach Gruppe geordnet: erst Sprint, dann Sprung, jede mit eigener Überschrift
+      (active === 'Alle' ? groups.slice(1) : [active]).forEach(function (gname) {
+        var ids = ORDER.filter(function (i) {
+          var a = S.athletes[i];
+          return (a.groups || [])[0] === gname && (!q || (a.name + ' ' + a.club).toLowerCase().indexOf(q) >= 0);
+        });
+        if (!ids.length) return;
+        if (active === 'Alle') { var hd = el('h2', 'group-head', gname); hd.appendChild(el('span', null, String(ids.length))); g.appendChild(hd); }
+        ids.forEach(function (i) { g.appendChild(athleteCard(S.athletes[i], i)); shown.push(i); n++; });
       });
       var cnt = document.getElementById('athlete-n'); if (cnt) cnt.textContent = n + (n === 1 ? ' Person' : ' Personen');
       empty.hidden = n > 0;

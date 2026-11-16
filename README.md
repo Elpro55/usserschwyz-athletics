@@ -15,7 +15,7 @@ Jeder Push auf `main` wird von Cloudflare automatisch gebaut und veröffentlicht
 1. Foto zuschneiden (4:5, 560×700) und als `public/img/vorname-nachname.jpg` ablegen.
 2. Eintrag in `public/data.js` nach dem System oben in der Datei: `pbs` als `['Disziplin', 'Leistung']`, `wins` als `[Jahr, 'Wettkampf', 'Resultat']`.
 3. `node tools/check-data.mjs` ausführen. Es meldet jede Abweichung vom Format.
-4. Pushen. Die Seite sortiert selbst (mit Foto zuerst, dann nach Nachname).
+4. Pushen. Die Seite sortiert selbst (erst Sprint, dann Sprung; darin mit Foto zuerst, dann nach Nachname).
 
 ## Adressen
 - `athleten.html#sprint` / `#sprung` – Liste nach Gruppe gefiltert
