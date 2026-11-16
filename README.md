@@ -3,16 +3,23 @@
 Webseite der Leichtathletik-Trainingsgruppe Usserschwyz Athletics: https://usserschwyz-athletics.com
 
 ## Aufbau
-- `public/` – die Webseite: Seiten (`index.html`, `verein.html`, `training.html`, `athleten.html`, `news.html`, `instagram.html`, `kontakt.html`, `impressum.html`), `admin.html`, `data.js` und `assets/`
-- `public/data.js` – Kontakt, Trainer, Trainingszeiten, Athleten (optional pro Athlet: `photo`, `bio`, `wins`; ohne Foto zeigt die Kachel die Bestleistung)
-- `public/img/` – Porträts der Athleten (Hochformat 4:5, ca. 560×700)
-- `public/404.html`, `robots.txt`, `sitemap.xml` – Fehlerseite und Suchmaschinen
-- Profil-Direktlink: `athleten.html#vorname-nachname`
-- `src/index.js` – Cloudflare Worker: beantwortet `/api/*`, liefert sonst die Dateien aus `public/`
-- `src/api/` – Login, News, Bilder und Instagram
-- `wrangler.jsonc` – Worker-Konfiguration
+- `public/` – die Webseite: `index.html` (Start mit Terminen, Fotos, «Wer wir sind»), `training.html`, `athleten.html`, `news.html`, `partner.html`, `kontakt.html`, `impressum.html`, `admin.html`, `404.html`
+- `public/data.js` – Kontakt, Trainingszeiten und Athleten. Das Format für Bestleistungen und Erfolge steht oben in der Datei.
+- `public/img/` – Porträts der Athleten (Hochformat 4:5, 560×700, `vorname-nachname.jpg`)
+- `src/index.js`, `src/api/` – Cloudflare Worker für Login, Termine, News, Fotos und Instagram
+- `tools/check-data.mjs` – prüft, ob `data.js` das einheitliche Format einhält
 
 Jeder Push auf `main` wird von Cloudflare automatisch gebaut und veröffentlicht.
+
+## Neues Athletenprofil (aus der Tally-Umfrage)
+1. Foto zuschneiden (4:5, 560×700) und als `public/img/vorname-nachname.jpg` ablegen.
+2. Eintrag in `public/data.js` nach dem System oben in der Datei: `pbs` als `['Disziplin', 'Leistung']`, `wins` als `[Jahr, 'Wettkampf', 'Resultat']`.
+3. `node tools/check-data.mjs` ausführen. Es meldet jede Abweichung vom Format.
+4. Pushen. Die Seite sortiert selbst (mit Foto zuerst, dann nach Nachname).
+
+## Adressen
+- `athleten.html#sprint` / `#sprung` – Liste nach Gruppe gefiltert
+- `athleten.html#vorname-nachname` – öffnet direkt ein Profil
 
 ## Login für News einrichten (einmalig)
 1. Storage & databases → Workers KV → Namespace `ua-data` erstellen und die ID kopieren.

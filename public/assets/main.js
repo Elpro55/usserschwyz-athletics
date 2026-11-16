@@ -19,7 +19,7 @@
 
   // ---------- Kopfzeile ----------
   var NAV = [
-    ['index.html', 'Start', 'start'], ['verein.html', 'Verein', 'verein'], ['training.html', 'Training', 'training'],
+    ['index.html', 'Start', 'start'], ['training.html', 'Training', 'training'],
     ['athleten.html', 'Athleten', 'athleten'], ['news.html', 'News', 'news'], ['partner.html', 'Partner', 'partner'], ['kontakt.html', 'Kontakt', 'kontakt']
   ];
   var header = document.getElementById('site-header');
@@ -116,6 +116,13 @@
   function slug(name) {
     return name.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   }
+  // Einheitliche Reihenfolge überall: mit Foto zuerst, dann nach Nachname
+  function lastName(a) { var p = a.name.trim().split(' '); return p[p.length - 1]; }
+  var ORDER = S.athletes.map(function (a, i) { return i; }).sort(function (x, y) {
+    var A = S.athletes[x], B = S.athletes[y];
+    return (B.photo ? 1 : 0) - (A.photo ? 1 : 0) || lastName(A).localeCompare(lastName(B), 'de') || A.name.localeCompare(B.name, 'de');
+  });
+  var shown = ORDER.slice(); // was gerade in der Liste sichtbar ist (für Weiter/Zurück im Profil)
   // Ohne Foto zeigt die Kachel die wichtigste Bestleistung statt einer leeren Fläche
   function pbTile(a) {
     var m = el('div', 'media pbtile');
@@ -148,17 +155,33 @@
       '<button class="close" type="button" aria-label="Profil schliessen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>' +
       '<p class="lead" id="d-bio" hidden></p>' +
       '<div class="block"><span class="lbl">Bestleistungen</span><div class="pb-table" id="d-pbs"></div></div>' +
-      '<div class="block" id="d-wins-b" hidden><span class="lbl">Erfolge</span><ul class="wins" id="d-wins"></ul></div>' +
+      '<div class="block" id="d-wins-b" hidden><span class="lbl">Erfolge</span><div class="res-table" id="d-wins"></div></div>' +
       '<a class="wa-btn" id="d-wa" target="_blank" rel="noopener" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>Profil auf World Athletics</a>' +
+      '<div class="d-nav"><button type="button" id="d-prev">Zurück</button><span id="d-pos"></span><button type="button" id="d-next">Weiter</button></div>' +
       '</div></div>';
     document.body.appendChild(modal);
+    modal.querySelector('#d-prev').addEventListener('click', function () { step(-1); });
+    modal.querySelector('#d-next').addEventListener('click', function () { step(1); });
+    document.addEventListener('keydown', function (e) {
+      if (modal.hidden) return;
+      if (e.key === 'ArrowLeft') step(-1); else if (e.key === 'ArrowRight') step(1);
+    });
     modal.querySelector('.close').addEventListener('click', closeProfile);
     modal.addEventListener('click', function (e) { if (e.target === modal) closeProfile(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) closeProfile(); });
   }
+  var current = -1;
+  function step(dir) {
+    var pos = shown.indexOf(current); if (pos < 0 || shown.length < 2) return;
+    openProfile(shown[(pos + dir + shown.length) % shown.length], lastFocus);
+  }
   function openProfile(i, from) {
     if (!modal) buildModal();
-    var a = S.athletes[i]; lastFocus = from;
+    var a = S.athletes[i]; lastFocus = from; current = i;
+    if (shown.indexOf(i) < 0) shown = ORDER.slice();
+    modal.querySelector('#d-pos').textContent = (shown.indexOf(i) + 1) + ' von ' + shown.length;
+    modal.querySelector('.d-nav').hidden = shown.length < 2;
+    modal.querySelector('.dialog').scrollTop = 0;
     var mm = media(a.photo, a.name); mm.id = 'd-media'; modal.querySelector('#d-media').replaceWith(mm);
     modal.querySelector('.dialog').classList.toggle('nophoto', !a.photo);
     try { history.replaceState(null, '', '#' + slug(a.name)); } catch (e) {}
@@ -168,13 +191,21 @@
     var pbs = modal.querySelector('#d-pbs'); pbs.innerHTML = '';
     (a.pbs || []).forEach(function (p) { var r = el('div', 'pb-row'); r.appendChild(el('span', null, p[0])); r.appendChild(el('b', null, p[1])); pbs.appendChild(r); });
     var wl = modal.querySelector('#d-wins'); wl.innerHTML = '';
-    (a.wins || []).forEach(function (w) { wl.appendChild(el('li', null, w)); });
+    // Erfolge: [Jahr, Wettkampf, Resultat], neuste zuerst, ohne Jahr am Schluss
+    (a.wins || []).slice().sort(function (x, y) { return (y[0] || 0) - (x[0] || 0); }).forEach(function (w) {
+      var r = el('div', 'res-row');
+      r.appendChild(el('span', 'res-y', w[0] ? String(w[0]) : ''));
+      r.appendChild(el('span', 'res-e', w[1]));
+      if (w[2]) r.appendChild(el('b', 'res-r', w[2]));
+      wl.appendChild(r);
+    });
     modal.querySelector('#d-wins-b').hidden = !(a.wins && a.wins.length);
     var wa = modal.querySelector('#d-wa');
     if (a.wa) { wa.href = 'https://worldathletics.org/athletes/switzerland/' + a.wa; wa.hidden = false; } else wa.hidden = true;
+    var wasOpen = !modal.hidden;
     modal.hidden = false; document.body.style.overflow = 'hidden';
     requestAnimationFrame(function () { modal.classList.add('open'); });
-    modal.querySelector('.close').focus();
+    if (!wasOpen) modal.querySelector('.close').focus();
   }
   function closeProfile() {
     modal.classList.remove('open'); modal.hidden = true; document.body.style.overflow = '';
@@ -248,6 +279,7 @@
   });
   fill('home-insta', function (g) { loadInsta(g, 3, null); });
   fill('athlete-count', function (n) { n.textContent = S.athletes.length; });
+  fill('profile-form', function (n) { if (S.profileForm) n.href = S.profileForm; else n.parentNode.hidden = true; });
   fill('contact-email', function (n) { n.textContent = S.contact.email; n.href = 'mailto:' + S.contact.email; });
 
   // Termine (Startseite): aus dem Admin-Bereich plus data.js
@@ -316,7 +348,7 @@
     S.athletes.forEach(function (a, i) {
       if (!a.pbs || !a.pbs[0]) return;
       var tr = el('tr');
-      var td = el('td'); var b = el('a', null, a.name); b.href = 'athleten.html#' + i; td.appendChild(b); td.appendChild(el('div', 'sub', a.club)); tr.appendChild(td);
+      var td = el('td'); var b = el('a', null, a.name); b.href = 'athleten.html#' + slug(a.name); td.appendChild(b); td.appendChild(el('div', 'sub', a.club)); tr.appendChild(td);
       tr.appendChild(el('td', null, a.pbs[0][0])); tr.appendChild(el('td', 'num', a.pbs[0][1]));
       tb.appendChild(tr);
     });
@@ -336,21 +368,11 @@
   });
 
   fill('home-athletes', function (g) {
-    var order = S.athletes.map(function (a, i) { return i; }).sort(function (x, y) { return (S.athletes[y].photo ? 1 : 0) - (S.athletes[x].photo ? 1 : 0); });
-    order.slice(0, 4).forEach(function (i) { g.appendChild(athleteCard(S.athletes[i], i, true)); });
+    // Vier Athleten, bevorzugt mit Foto. Der Start wechselt jeden Tag, damit alle einmal vorne stehen.
+    var pool = ORDER.filter(function (i) { return S.athletes[i].photo; }); if (pool.length < 4) pool = ORDER.slice();
+    var day = Math.floor(Date.now() / 864e5);
+    for (var k = 0; k < Math.min(4, pool.length); k++) { var i = pool[(day + k) % pool.length]; g.appendChild(athleteCard(S.athletes[i], i, true)); }
   });
-  fill('wins-list', function (g) {
-    var any = false;
-    S.athletes.forEach(function (a) {
-      if (!a.wins || !a.wins.length) return; any = true;
-      var row = el('div', 'wins-row');
-      var who = el('div', 'wins-who'); var link = el('a', null, a.name); link.href = 'athleten.html#' + slug(a.name); who.appendChild(link); who.appendChild(el('span', 'club', a.club)); row.appendChild(who);
-      var ul = el('ul', 'wins'); a.wins.forEach(function (w) { ul.appendChild(el('li', null, w)); }); row.appendChild(ul);
-      g.appendChild(row);
-    });
-    var sec = document.getElementById('wins-section'); if (sec) sec.hidden = !any;
-  });
-
   fill('all-athletes', function (g) {
     var chips = document.getElementById('group-chips'), search = document.getElementById('athlete-search'), empty = document.getElementById('athlete-empty');
     var active = 'Alle', groups = ['Alle'].concat(S.groups || []);
@@ -362,18 +384,22 @@
     });
     search.addEventListener('input', render);
     function render() {
-      g.innerHTML = ''; var q = search.value.trim().toLowerCase(), n = 0;
-      S.athletes.forEach(function (a, i) {
+      g.innerHTML = ''; var q = search.value.trim().toLowerCase(), n = 0; shown = [];
+      ORDER.forEach(function (i) {
+        var a = S.athletes[i];
         if (active !== 'Alle' && (a.groups || []).indexOf(active) < 0) return;
         if (q && (a.name + ' ' + a.club).toLowerCase().indexOf(q) < 0) return;
-        var c = athleteCard(a, i); c.style.setProperty('--d', (n % 4) * 70 + 'ms'); g.appendChild(c); n++;
+        g.appendChild(athleteCard(a, i)); shown.push(i); n++;
       });
+      var cnt = document.getElementById('athlete-n'); if (cnt) cnt.textContent = n + (n === 1 ? ' Person' : ' Personen');
       empty.hidden = n > 0;
       observe(g);
     }
-    render();
-    // Direktlink auf ein Profil: athleten.html#vorname-nachname
+    // Adresse: athleten.html#sprung filtert die Gruppe, athleten.html#vorname-nachname öffnet ein Profil
     var h = decodeURIComponent((location.hash || '').slice(1)), hi = -1;
+    groups.forEach(function (gname) { if (gname !== 'Alle' && slug(gname) === h) active = gname; });
+    chips.querySelectorAll('.chip').forEach(function (x) { x.setAttribute('aria-pressed', x.textContent === active); });
+    render();
     S.athletes.forEach(function (a, i) { if (slug(a.name) === h) hi = i; });
     if (hi < 0 && /^\d+$/.test(h) && S.athletes[+h]) hi = +h;
     if (hi >= 0) openProfile(hi, null);

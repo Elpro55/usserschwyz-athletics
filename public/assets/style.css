@@ -615,3 +615,35 @@ footer.site{font-size:15px}
 }
 .brand b{white-space:nowrap}
 @media (max-width:640px){.brand b{font-size:20px}.brand small{font-size:12px}.brand .logo{width:42px;height:42px}}
+
+/* ---------------------------------------------------------------
+   Einheitliche Darstellung: Bestleistungen und Erfolge
+   Beide als Liste mit Bezeichnung links und Wert rechts.
+   --------------------------------------------------------------- */
+.pb-row,.res-row{border-bottom:1px solid var(--line)}
+.pb-row:last-child,.res-row:last-child{border-bottom:0}
+.pb-row span{font-size:16px;color:var(--ink)}
+.res-table{border-top:1px solid var(--line)}
+.pb-table{border-top:1px solid var(--line)}
+.res-row{display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:2px 12px;align-items:baseline;padding:10px 0}
+.res-y{font-family:var(--display);font-weight:700;font-size:19px;color:var(--label);font-variant-numeric:tabular-nums}
+.res-e{font-size:16px;color:var(--ink)}
+.res-r{font-family:var(--display);font-weight:700;font-size:20px;line-height:1.15;color:var(--ink);text-align:right}
+@media (max-width:520px){
+  .res-row{grid-template-columns:46px minmax(0,1fr)}
+  .res-r{grid-column:2;text-align:left}
+}
+
+/* Blättern im Profil */
+.d-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px;padding-top:16px;border-top:2px solid var(--ink)}
+.d-nav button{font:inherit;font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;background:none;border:0;color:var(--ink);cursor:pointer;padding:6px 0}
+.d-nav button:hover{color:var(--accent)}
+.d-nav span{font-size:14px;color:var(--label);font-variant-numeric:tabular-nums}
+
+/* Athletenliste: Anzahl und Hinweis */
+.athlete-n{font-size:15px;color:var(--label);margin-right:auto;margin-left:6px}
+.profile-note{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:15px}
+.profile-note a{font-weight:600;color:var(--ink)}
+a.group{text-decoration:none;display:block}
+a.group:hover{background:#A30D26}
+@media (max-width:640px){.dialog .media{aspect-ratio:4/3}.dialog .media img{object-position:50% 18%}}

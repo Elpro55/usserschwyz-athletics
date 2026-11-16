@@ -25,18 +25,20 @@
     <div class="wrap intro">
       <span class="eyebrow">Athleten</span>
       <h1>Athletinnen und Athleten</h1>
-      <p>Bestleistungen aus den Resultatlisten von Swiss Athletics und World Athletics.</p>
+      <p>Bestleistungen und Erfolge. Ein Klick auf eine Karte öffnet das Profil.</p>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap">
       <div class="toolbar">
-        <div class="chips" id="group-chips" role="group" aria-label="Nach Disziplin filtern"></div>
+        <div class="chips" id="group-chips" role="group" aria-label="Nach Gruppe filtern"></div>
+        <span class="athlete-n" id="athlete-n" aria-live="polite"></span>
         <input class="search" id="athlete-search" type="search" placeholder="Name oder Verein suchen" aria-label="Athlet suchen">
       </div>
       <div class="athletes" id="all-athletes"></div>
       <p class="empty" id="athlete-empty" hidden>Niemand gefunden. Versuch es mit einem anderen Namen oder Filter.</p>
+      <p class="note profile-note">Du trainierst bei uns und fehlst hier, oder dein Profil ist nicht mehr aktuell? <a id="profile-form" href="kontakt.html" target="_blank" rel="noopener">Profil einreichen</a></p>
     </div>
   </section>
 </main>
