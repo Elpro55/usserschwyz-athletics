@@ -72,7 +72,7 @@ window.SITE = {
       bio: 'Ich mache seit 2023 Leichtathletik und mag besonders die Mischung aus Sprint und Hürden. In Zukunft möchte ich weiterhin Spass am Sport haben und eine Medaille an den Schweizer Meisterschaften gewinnen.' },
     { name: 'Elis Schönbächler', club: 'STV Einsiedeln', groups: ['Sprint'], wa: 'elis-schonbachler-15257093',
       photo: 'img/elis-schoenbaechler.jpg',
-      pbs: [['400 m', '49.63'], ['200 m', '22.73'], ['100 m', '11.35']],
+      pbs: [['400 m', '49.63'], ['200 m', '22.56'], ['100 m', '11.35']],
       wins: [
         [2026, 'Schweizer Meisterschaft U20', 'Final'],
         [2026, 'Schweizer Meisterschaft Aktive', 'Teilnahme'],
