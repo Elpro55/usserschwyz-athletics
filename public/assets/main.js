@@ -104,7 +104,7 @@
     footer.innerHTML =
       '<div class="wrap"><div class="foot-grid">' +
       '<div><a class="brand" href="index.html"><img class="logo" src="assets/logo-160.png" width="48" height="48" alt=""><span><b>Usserschwyz Athletics</b><small>seit 2013</small></span></a>' +
-      '<p>Trainingsgruppe für leistungsorientierte Leichtathletinnen und Leichtathleten in Sprint und Sprung.</p></div>' +
+      '<p>Trainingsgruppe für leistungsorientierte Leichtathletinnen und Leichtathleten aus Ausserschwyz, in Sprint und Sprung.</p></div>' +
       '<div><h4>Seiten</h4><ul>' + NAV.map(function (n) { return '<li><a href="' + n[0] + '">' + n[1] + '</a></li>'; }).join('') + '</ul></div>' +
       '<div><h4>Training</h4><ul>' + S.training.map(function (d) { return '<li>' + d.day + ' ' + d.time + '</li>'; }).join('') + '</ul></div>' +
       '<div><h4>Folge uns</h4><ul><li><a href="https://www.instagram.com/' + S.contact.instagram + '/" target="_blank" rel="noopener">Instagram @' + S.contact.instagram + '</a></li>' +
