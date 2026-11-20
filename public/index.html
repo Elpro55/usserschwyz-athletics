@@ -82,6 +82,9 @@
   .agenda{position:relative;z-index:3;background:transparent;margin-top:0;padding:38px 0 70px;min-height:460px}
   .agenda>.wrap{position:relative;z-index:2;padding-right:clamp(24px,9vw,145px)}
   @media(max-width:760px){.agenda{min-height:0;padding:34px 0 44px}.agenda>.wrap{padding-right:24px}}
+  /* Termine liegen über der Bahn: weisser Grund, damit die Schrift lesbar bleibt, wenn die Kurve dahinter durchläuft */
+  .agenda .table-scroll,.agenda .next{background:#fff;box-shadow:0 0 0 14px #fff}
+  .agenda .next{width:fit-content;padding-right:24px}
   .next{margin:26px 0 0}
   .about{background:#F2F3F5;padding-block:72px}
   .about .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:start}
@@ -213,10 +216,12 @@
       var small = window.innerWidth <= 760;
       // Scrollen = über die Bahn laufen: die Gerade zieht nach links weg, die Kurve dreht ins Bild
       var e = p * (2 - p); // weich auslaufen
-      ground.style.setProperty('--tilt', ((small ? 46 : 38) + e * 10 + ty * 4) + 'deg');
-      ground.style.setProperty('--turn', ((small ? 0 : -4) + e * 5 + tx * 3) + 'deg');
-      ground.style.setProperty('--slide', (-e * (small ? 200 : 260)) + 'px');
-      ground.style.setProperty('--lift', (-e * 30) + 'px');
+      ground.style.setProperty('--tilt', ((small ? 46 : 38) + e * 22 + ty * 4) + 'deg');
+      ground.style.setProperty('--turn', ((small ? 0 : -4) + e * 14 + tx * 3) + 'deg');
+      ground.style.setProperty('--slide', (-e * (small ? 320 : 560)) + 'px');
+      ground.style.setProperty('--lift', (-e * 90) + 'px');
+      // Wenn die Termine kommen, blendet die Bahn aus, damit sie nicht über dem Text liegt
+      ground.style.opacity = String(Math.max(0, Math.min(1, 1 - (p - (small ? .35 : .3)) * 2.6)));
       if (!small) title.style.transform = 'rotateY(' + (tx * 5) + 'deg) rotateX(' + (-ty * 4) + 'deg) translateZ(0)';
       if (Math.abs(mx - tx) > .001 || Math.abs(my - ty) > .001) raf = requestAnimationFrame(tick);
     }
