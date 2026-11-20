@@ -41,12 +41,8 @@
   .track .lane{fill:none;stroke:#fff;stroke-width:3}
   .track .num{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;font-size:30px;fill:#fff}
 
-  /* Titel mit Tiefe: Buchstaben als Blöcke, Schatten als Seitenflächen */
-  .cover h1{perspective:900px}
-  .cover h1 .ch{display:inline-block;transform-origin:50% 100%;backface-visibility:hidden}
-  .cover h1 .one{text-shadow:none}
-  .cover h1 .two{text-shadow:none}
-  .cover .wrap{transform-style:preserve-3d;will-change:transform}
+  /* Flacher Titel ohne räumliche Effekte */
+  .cover h1,.cover h1 span{perspective:none!important;transform:none!important;text-shadow:none!important;filter:none!important;animation:none!important;-webkit-text-stroke:0!important}
 
   /* Handy: Titel, darunter ein Stück Bahn, dann direkt die Termine */
   @media (max-width:760px){
@@ -61,7 +57,6 @@
   /* Ein Moment beim Laden: Bahn klappt aus der Fläche in den Raum, Buchstaben kippen hoch */
   @media (prefers-reduced-motion:no-preference){
     .ground{animation:groundIn 1.5s cubic-bezier(.16,.84,.24,1) .1s both}
-    .cover h1 .ch{animation:chIn .9s cubic-bezier(.2,.9,.25,1.15) both;animation-delay:calc(.25s + var(--i) * 35ms)}
     .track .lane{stroke-dasharray:2600;stroke-dashoffset:2600;animation:laneDraw 1.6s cubic-bezier(.3,.6,.2,1) both;animation-delay:calc(.5s + var(--l) * 70ms)}
     .track .num{animation:fadeIn .5s ease both;animation-delay:calc(1.1s + var(--l) * 60ms)}
   }
@@ -75,7 +70,6 @@
   @keyframes drift{from{transform:none}to{transform:rotateX(12deg) rotateZ(7deg) translate3d(-180px,-30px,0)}}
   @keyframes fadeOut{to{opacity:0}}
   @keyframes groundIn{from{opacity:0;transform:rotateX(78deg) rotateZ(-14deg) translateY(160px)}to{opacity:1}}
-  @keyframes chIn{from{opacity:0;transform:rotateX(-92deg) translateY(10px)}to{opacity:1;transform:none}}
   @keyframes laneDraw{to{stroke-dashoffset:0}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   /* Fotogalerie unterhalb der Termine */
@@ -196,17 +190,6 @@
     }
   })();
 
-  // Titel in einzelne Buchstaben teilen (für das Hochkippen beim Laden)
-  (function () {
-    var n = 0;
-    document.querySelectorAll('.cover h1 span').forEach(function (sp) {
-      var txt = sp.textContent; sp.setAttribute('aria-label', txt); sp.textContent = '';
-      txt.split('').forEach(function (c) {
-        var ch = document.createElement('span'); ch.className = 'ch'; ch.setAttribute('aria-hidden', 'true');
-        ch.textContent = c; ch.style.setProperty('--i', n++); sp.appendChild(ch);
-      });
-    });
-  })();
 
 </script>
 <script>
