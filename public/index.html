@@ -35,7 +35,7 @@
   .cover h1 .two{color:#C8102E}
   /* 3D-Bühne: Die Bahn liegt wie ein Boden im Raum und kippt beim Laden nach hinten */
   .stage{position:absolute;left:0;right:0;bottom:-360px;height:calc(48% + 360px);z-index:1;perspective:1100px;perspective-origin:62% -40%;pointer-events:none}
-  .ground{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:50% 0;transform:rotateX(var(--tilt,38deg)) rotateZ(var(--turn,-4deg)) translateY(var(--lift,0px));will-change:transform}
+  .ground{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:50% 0;transform:rotateX(var(--tilt,38deg)) rotateZ(var(--turn,-4deg)) translate3d(var(--slide,0px),var(--lift,0px),0);will-change:transform}
   .track{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
   .track .tartan{filter:drop-shadow(0 40px 40px rgba(20,33,61,.18))}
   .track .lane{fill:none;stroke:#fff;stroke-width:3}
@@ -205,14 +205,18 @@
     var ground = document.querySelector('.ground'), title = document.querySelector('.cover .wrap'), cover = document.querySelector('.cover');
     var mx = 0, my = 0, tx = 0, ty = 0, sc = 0, raf = 0, fine = window.matchMedia('(pointer: fine)').matches;
     var started = false; setTimeout(function () { started = true; ground.style.animation = 'none'; tick(); }, 1650);
+    window.addEventListener('scroll', function () { if (!started) { started = true; ground.style.animation = 'none'; } }, { passive: true, once: true });
     function tick() {
       raf = 0; if (!started) return;
       tx += (mx - tx) * .08; ty += (my - ty) * .08;
       var h = cover.offsetHeight || 1, p = Math.min(1, Math.max(0, window.scrollY / h));
       var small = window.innerWidth <= 760;
-      ground.style.setProperty('--tilt', ((small ? 46 : 38) + p * 18 + ty * 4) + 'deg');
-      ground.style.setProperty('--turn', ((small ? 0 : -4) + tx * 3) + 'deg');
-      ground.style.setProperty('--lift', (-p * 120) + 'px');
+      // Scrollen = über die Bahn laufen: die Gerade zieht nach links weg, die Kurve dreht ins Bild
+      var e = p * (2 - p); // weich auslaufen
+      ground.style.setProperty('--tilt', ((small ? 46 : 38) + e * 10 + ty * 4) + 'deg');
+      ground.style.setProperty('--turn', ((small ? 0 : -4) + e * 5 + tx * 3) + 'deg');
+      ground.style.setProperty('--slide', (-e * (small ? 200 : 260)) + 'px');
+      ground.style.setProperty('--lift', (-e * 30) + 'px');
       if (!small) title.style.transform = 'rotateY(' + (tx * 5) + 'deg) rotateX(' + (-ty * 4) + 'deg) translateZ(0)';
       if (Math.abs(mx - tx) > .001 || Math.abs(my - ty) > .001) raf = requestAnimationFrame(tick);
     }
