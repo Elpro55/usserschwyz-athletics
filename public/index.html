@@ -31,25 +31,43 @@
   .cover{position:relative;height:115vh;height:115svh;min-height:720px;max-height:1300px;overflow:visible;background:#fff}
   .cover .wrap{position:relative;z-index:2;padding-top:clamp(104px,15vh,170px)}
   .cover h1{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:800;color:#14213D;font-size:clamp(64px,min(12.5vw,19vh),196px);line-height:.84;letter-spacing:-.012em;text-transform:uppercase;margin:0}
-  .cover h1 span{display:block}
+  .cover h1 > span{display:block}
   .cover h1 .two{color:#C8102E}
-  .track{position:absolute;left:0;right:0;bottom:-360px;width:100%;height:calc(48% + 360px);z-index:1;overflow:visible}
+  /* 3D-Bühne: Die Bahn liegt wie ein Boden im Raum und kippt beim Laden nach hinten */
+  .stage{position:absolute;left:0;right:0;bottom:-360px;height:calc(48% + 360px);z-index:1;perspective:1100px;perspective-origin:62% -40%;pointer-events:none}
+  .ground{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:50% 0;transform:rotateX(var(--tilt,38deg)) rotateZ(var(--turn,-4deg)) translateY(var(--lift,0px));will-change:transform}
+  .track{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+  .track .tartan{filter:drop-shadow(0 40px 40px rgba(20,33,61,.18))}
   .track .lane{fill:none;stroke:#fff;stroke-width:3}
   .track .num{font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:700;font-size:30px;fill:#fff}
+
+  /* Titel mit Tiefe: Buchstaben als Blöcke, Schatten als Seitenflächen */
+  .cover h1{perspective:900px}
+  .cover h1 .ch{display:inline-block;transform-origin:50% 100%;backface-visibility:hidden}
+  .cover h1 .one{text-shadow:1px 1px 0 #0d1830,2px 2px 0 #0d1830,3px 3px 0 #0d1830,4px 4px 0 #0d1830,5px 5px 0 #0d1830,6px 6px 0 #0d1830,14px 22px 30px rgba(20,33,61,.22)}
+  .cover h1 .two{text-shadow:1px 1px 0 #8f0b21,2px 2px 0 #8f0b21,3px 3px 0 #8f0b21,4px 4px 0 #8f0b21,5px 5px 0 #8f0b21,6px 6px 0 #8f0b21,14px 22px 30px rgba(200,16,46,.2)}
+  .cover .wrap{transform-style:preserve-3d;will-change:transform}
+
   /* Handy: Titel, darunter ein Stück Bahn, dann direkt die Termine */
   @media (max-width:760px){
     .cover{height:auto;min-height:0;max-height:none;overflow:hidden;display:flex;flex-direction:column}
     .cover .wrap{order:1;width:100%;padding-top:112px;padding-bottom:30px}
-    .track{order:2;flex:none;position:relative;bottom:auto;left:auto;right:auto;display:block;width:200%;margin-left:-100%;height:250px;overflow:hidden}
+    .stage{order:2;flex:none;position:relative;bottom:auto;left:auto;right:auto;height:270px;perspective:600px;perspective-origin:70% -60%}
+    .ground{--tilt:46deg}
+    .track{width:200%;left:-100%}
     .track .num{display:none}
+    .cover h1 .one,.cover h1 .two{text-shadow:1px 1px 0 currentColor,2px 2px 0 rgba(0,0,0,.25),3px 3px 0 rgba(0,0,0,.25),8px 12px 18px rgba(20,33,61,.18)}
   }
-  /* Nur dezent: Titel und Bahn blenden beim Laden kurz ein */
+  /* Ein Moment beim Laden: Bahn klappt aus der Fläche in den Raum, Buchstaben kippen hoch */
   @media (prefers-reduced-motion:no-preference){
-    .cover h1 span{animation:softIn .6s ease both}
-    .cover h1 .two{animation-delay:.08s}
-    .track{animation:fadeIn .8s ease .15s both}
+    .ground{animation:groundIn 1.5s cubic-bezier(.16,.84,.24,1) .1s both}
+    .cover h1 .ch{animation:chIn .9s cubic-bezier(.2,.9,.25,1.15) both;animation-delay:calc(.25s + var(--i) * 35ms)}
+    .track .lane{stroke-dasharray:2600;stroke-dashoffset:2600;animation:laneDraw 1.6s cubic-bezier(.3,.6,.2,1) both;animation-delay:calc(.5s + var(--l) * 70ms)}
+    .track .num{animation:fadeIn .5s ease both;animation-delay:calc(1.1s + var(--l) * 60ms)}
   }
-  @keyframes softIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes groundIn{from{opacity:0;transform:rotateX(78deg) rotateZ(-14deg) translateY(160px)}to{opacity:1}}
+  @keyframes chIn{from{opacity:0;transform:rotateX(-92deg) translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes laneDraw{to{stroke-dashoffset:0}}
   @keyframes fadeIn{from{opacity:0}to{opacity:1}}
   /* Fotogalerie unterhalb der Termine */
   .gallery-section{background:#fff;padding:8px 0 48px}
@@ -93,6 +111,7 @@
 
 <main class="start-track">
 <div class="cover">
+  <div class="stage" aria-hidden="true"><div class="ground">
   <svg class="track" viewBox="0 340 1600 1120" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
     <!-- Originalbahn: nur die erste Kurve bis zur 200-m-Seite, keine zweite Haelfte -->
     <path class="tartan" fill="#C8102E" d="M-40 360 H1150 A740 740 0 0 1 1890 1100 L1530 1100 A380 380 0 0 0 1150 720 H-40 Z"/>
@@ -100,6 +119,7 @@
     <line class="lane" x1="210" y1="360" x2="210" y2="720"/>
     <g id="nums"></g>
   </svg>
+  </div></div>
   <div class="wrap">
     <h1><span class="one">Usserschwyz</span><span class="two">Athletics</span></h1>
   </div>
@@ -155,18 +175,54 @@
     for (var i = 0; i <= 8; i++) {
       var r = 380 + i * 45, y = 1100 - r;
       var p = document.createElementNS(ns, 'path');
-      p.setAttribute('class', 'lane');
+      p.setAttribute('class', 'lane'); p.style.setProperty('--l', i);
       p.setAttribute('d', 'M-40 ' + y + ' H1150 A' + r + ' ' + r + ' 0 0 1 ' + (1150 + r) + ' 1100');
       lanes.appendChild(p);
       if (i < 8) {
         var t = document.createElementNS(ns, 'text');
         t.setAttribute('class', 'num'); t.setAttribute('x', 150); t.setAttribute('y', y - 22 + 9);
-        t.setAttribute('text-anchor', 'middle'); t.textContent = i + 1;
+        t.setAttribute('text-anchor', 'middle'); t.textContent = i + 1; t.style.setProperty('--l', i);
         nums.appendChild(t);
       }
     }
   })();
 
+  // Titel in einzelne Buchstaben teilen (für das Hochkippen beim Laden)
+  (function () {
+    var n = 0;
+    document.querySelectorAll('.cover h1 span').forEach(function (sp) {
+      var txt = sp.textContent; sp.setAttribute('aria-label', txt); sp.textContent = '';
+      txt.split('').forEach(function (c) {
+        var ch = document.createElement('span'); ch.className = 'ch'; ch.setAttribute('aria-hidden', 'true');
+        ch.textContent = c; ch.style.setProperty('--i', n++); sp.appendChild(ch);
+      });
+    });
+  })();
+
+  // Raum bewegt sich mit: beim Scrollen kippt die Bahn weiter nach hinten, die Maus dreht den Raum leicht
+  (function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ground = document.querySelector('.ground'), title = document.querySelector('.cover .wrap'), cover = document.querySelector('.cover');
+    var mx = 0, my = 0, tx = 0, ty = 0, sc = 0, raf = 0, fine = window.matchMedia('(pointer: fine)').matches;
+    var started = false; setTimeout(function () { started = true; ground.style.animation = 'none'; tick(); }, 1650);
+    function tick() {
+      raf = 0; if (!started) return;
+      tx += (mx - tx) * .08; ty += (my - ty) * .08;
+      var h = cover.offsetHeight || 1, p = Math.min(1, Math.max(0, window.scrollY / h));
+      var small = window.innerWidth <= 760;
+      ground.style.setProperty('--tilt', ((small ? 46 : 38) + p * 18 + ty * 4) + 'deg');
+      ground.style.setProperty('--turn', ((small ? 0 : -4) + tx * 3) + 'deg');
+      ground.style.setProperty('--lift', (-p * 120) + 'px');
+      if (!small) title.style.transform = 'rotateY(' + (tx * 5) + 'deg) rotateX(' + (-ty * 4) + 'deg) translateZ(0)';
+      if (Math.abs(mx - tx) > .001 || Math.abs(my - ty) > .001) raf = requestAnimationFrame(tick);
+    }
+    function kick() { if (!raf) raf = requestAnimationFrame(tick); }
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', kick);
+    if (fine) window.addEventListener('pointermove', function (e) {
+      mx = e.clientX / window.innerWidth - .5; my = e.clientY / window.innerHeight - .5; kick();
+    }, { passive: true });
+  })();
 </script>
 <script>
 (function(){
