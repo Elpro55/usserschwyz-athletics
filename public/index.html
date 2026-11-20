@@ -44,8 +44,8 @@
   /* Titel mit Tiefe: Buchstaben als Blöcke, Schatten als Seitenflächen */
   .cover h1{perspective:900px}
   .cover h1 .ch{display:inline-block;transform-origin:50% 100%;backface-visibility:hidden}
-  .cover h1 .one{text-shadow:1px 1px 0 #0d1830,2px 2px 0 #0d1830,3px 3px 0 #0d1830,4px 4px 0 #0d1830,5px 5px 0 #0d1830,6px 6px 0 #0d1830,14px 22px 30px rgba(20,33,61,.22)}
-  .cover h1 .two{text-shadow:1px 1px 0 #8f0b21,2px 2px 0 #8f0b21,3px 3px 0 #8f0b21,4px 4px 0 #8f0b21,5px 5px 0 #8f0b21,6px 6px 0 #8f0b21,14px 22px 30px rgba(200,16,46,.2)}
+  .cover h1 .one{text-shadow:none}
+  .cover h1 .two{text-shadow:none}
   .cover .wrap{transform-style:preserve-3d;will-change:transform}
 
   /* Handy: Titel, darunter ein Stück Bahn, dann direkt die Termine */
@@ -56,7 +56,7 @@
     .ground{--tilt:46deg}
     .track{width:200%;left:-100%}
     .track .num{display:none}
-    .cover h1 .one,.cover h1 .two{text-shadow:1px 1px 0 currentColor,2px 2px 0 rgba(0,0,0,.25),3px 3px 0 rgba(0,0,0,.25),8px 12px 18px rgba(20,33,61,.18)}
+    .cover h1 .one,.cover h1 .two{text-shadow:none}
   }
   /* Ein Moment beim Laden: Bahn klappt aus der Fläche in den Raum, Buchstaben kippen hoch */
   @media (prefers-reduced-motion:no-preference){
