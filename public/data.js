@@ -117,10 +117,29 @@ window.SITE = {
     { name: 'Miro Flattich', club: 'TV Pfäffikon', groups: ['Sprint'], wa: 'miro-joel-flattich-14810916',
       pbs: [['800 m', '1:52.63'], ['600 m', '1:19.94'], ['1000 m (Halle)', '2:33.42']] },
     { name: 'Marco Harder', club: 'STV Wollerau-Bäch', groups: ['Sprint'], wa: 'marco-harder-15064887',
-      pbs: [['100 m', '10.80'], ['60 m (Halle)', '7.04'], ['200 m (Halle)', '22.94']] },
+      photo: 'img/marco-harder.jpg',
+      pbs: [['100 m', '10.80'], ['200 m', '22.55'], ['60 m (Halle)', '7.04']],
+      wins: [
+        [2026, 'Schweizer Hallenmeisterschaft U20', '6. Rang, 60 m'],
+        [2025, 'Schweizer Meisterschaft U20, Aarau', 'Silber, 100 m'],
+        [2025, 'Nachwuchs-SM 2023 bis 2025', '3× Final, 100 m'],
+        [2024, 'Schweizer Meisterschaft U18, Lausanne', '5. Rang, 200 m'],
+        [2022, 'Visana Sprint Schweizer Final 2019 bis 2022', '4× Final'],
+        [2021, 'UBS Kids Cup Schweizer Final, Zürich', '7. Rang'],
+        [2021, 'Visana Sprint, Schaffhausen', '2. Rang'],
+        [2020, 'Visana Sprint, Interlaken', '2. Rang'],
+        [null, 'Kantonalrekord U16 über 80 m', '']
+      ],
+      bio: 'Ich mache seit 2018 Leichtathletik, zuerst in Wollerau, und bin 2023 zu UA gestossen. Mir gefällt es, an mir selbst zu feilen und das herauszuholen, was es in diesem Sport braucht. Immer schneller werden zu wollen, wird fast zu einer Sucht. 2026 durfte ich Teil des Schweizer U20-Staffelprojekts sein. Mein Ziel ist, auf diesem Niveau weiter aufzubauen, meine Bestleistungen weiter zu senken und mich zu etablieren.' },
     { name: 'Lara Laager', club: 'LAV Glarus', groups: ['Sprint'], wa: 'lara-laager-15154530',
       pbs: [['200 m', '25.48'], ['100 m', '12.73'], ['150 m', '19.14']] },
     { name: 'Jana Schneider', club: 'STV Wangen SZ', groups: ['Sprint'],
-      pbs: [['100 m Hürden (U18)', '15.68'], ['200 m', '26.72'], ['100 m', '13.08']] }
+      photo: 'img/jana-schneider.jpg',
+      pbs: [['100 m Hürden (U18)', '15.68'], ['200 m', '26.72'], ['100 m', '13.08']],
+      wins: [
+        [2026, 'Schweizer Meisterschaft U18', 'Teilnahme'],
+        [2025, 'Schweizer Meisterschaft U16', 'Teilnahme']
+      ],
+      bio: 'Ich habe 2022 mit Leichtathletik angefangen. Besonders mag ich bei den Hürden die Kombination aus Schnelligkeit und Technik. Meine Ziele sind weitere SM-Teilnahmen und neue Bestleistungen.' }
   ]
 };
